@@ -117,8 +117,10 @@ public class SwitchButton extends CompoundButton {
 
     @Override
     protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+
         //保存并创建一个新的透明层，如果不这样做的话，画出来的背景会是黑的
-        canvas.saveLayer(0, 0, getWidth(), getHeight(), null, Canvas.MATRIX_SAVE_FLAG | Canvas.CLIP_SAVE_FLAG | Canvas.HAS_ALPHA_LAYER_SAVE_FLAG | Canvas.FULL_COLOR_LAYER_SAVE_FLAG | Canvas.CLIP_TO_LAYER_SAVE_FLAG);
+        canvas.saveLayer(0, 0, getWidth(), getHeight(), paint, Canvas.MATRIX_SAVE_FLAG | Canvas.CLIP_SAVE_FLAG | Canvas.HAS_ALPHA_LAYER_SAVE_FLAG | Canvas.FULL_COLOR_LAYER_SAVE_FLAG | Canvas.CLIP_TO_LAYER_SAVE_FLAG);
 
         //绘制状态层
         if(statusDrawable != null && statusMaskBitmapDrawable != null){
@@ -146,8 +148,6 @@ public class SwitchButton extends CompoundButton {
             canvas.drawBitmap(sliderMaskBitmapDrawable.getBitmap(), 0, 0, paint);
             paint.setXfermode(null);
         }
-
-        super.onDraw(canvas);
     }
 
     @Override

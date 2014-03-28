@@ -124,23 +124,4 @@
             app:sliderDrawable="@drawable/selector_switch_slider"
             app:sliderMaskDrawable="@drawable/button_sliding_slider_mask"/>
     </LinearLayout>
-
-    <LinearLayout
-        style="@style/item"
-        android:id="@+id/layout_main_6"
-        android:gravity="center_vertical"
-        android:clickable="true"
-        android:background="@drawable/selector_preference_complete"
-        android:layout_marginTop="16dp">
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textColor="@android:color/black"
-            android:text="今日推荐"/>
-        <CheckBox
-            android:id="@+id/switch_main_6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-    </LinearLayout>
 </LinearLayout>
