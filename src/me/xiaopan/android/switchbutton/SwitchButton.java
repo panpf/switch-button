@@ -10,20 +10,14 @@ import android.view.MotionEvent;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.CompoundButton;
 import android.widget.Scroller;
-import android.widget.Toast;
 
-import java.lang.reflect.Method;
-
-/**
- * Created by xiaopan on 2014/3/27 0027.
- */
 public class SwitchButton extends CompoundButton {
-    private int slideX = 0; //X轴当前位置，用于动态绘制图片显示位置，实现滑动效果
-    private int minSlideX = 0;  //X轴最小位置，用于防止往左边滑动时超出范围
-    private int maxSlideX = 0;  //X轴最大位置，用于防止往右边滑动时超出范围
+    private int slideX = 0; //X轴当前坐标，用于动态绘制图片显示坐标，实现滑动效果
+    private int minSlideX = 0;  //X轴最小坐标，用于防止往左边滑动时超出范围
+    private int maxSlideX = 0;  //X轴最大坐标，用于防止往右边滑动时超出范围
     private int tempTotalSlideDistance;   //滑动距离，用于记录每次滑动的距离，在滑动结束后根据距离判断是否切换状态或者回滚
     private int duration = 200;
-    private float tempTouchX;   //记录上次触摸位置，用于计算滑动距离
+    private float tempTouchX;   //记录上次触摸坐标，用于计算滑动距离
     private float minChangeDistanceScale = 0.2f;   //有效距离比例，例如按钮宽度为100，比例为0.3，那么只有当滑动距离大于等于(100*0.3)才会切换状态，否则就回滚
     private Paint paint;    //画笔，用来绘制遮罩效果
     private Drawable frameDrawable; //框架层图片
@@ -54,16 +48,18 @@ public class SwitchButton extends CompoundButton {
         porterDuffXfermode = new PorterDuffXfermode(PorterDuff.Mode.DST_IN);
         switchScroller = new SwitchScroller(getContext(), new AccelerateDecelerateInterpolator());
 
-        if(attrs != null){
+        if(attrs != null && getContext() != null){
             TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.SwitchButton);
-            setDrawables(
-                typedArray.getDrawable(R.styleable.SwitchButton_frameDrawable),
-                typedArray.getDrawable(R.styleable.SwitchButton_stateDrawable),
-                (BitmapDrawable) typedArray.getDrawable(R.styleable.SwitchButton_stateMaskDrawable),
-                typedArray.getDrawable(R.styleable.SwitchButton_sliderDrawable),
-                (BitmapDrawable) typedArray.getDrawable(R.styleable.SwitchButton_sliderMaskDrawable)
-            );
-            typedArray.recycle();
+            if(typedArray != null){
+                setDrawables(
+                    typedArray.getDrawable(R.styleable.SwitchButton_frameDrawable),
+                    typedArray.getDrawable(R.styleable.SwitchButton_stateDrawable),
+                    (BitmapDrawable) typedArray.getDrawable(R.styleable.SwitchButton_stateMaskDrawable),
+                    typedArray.getDrawable(R.styleable.SwitchButton_sliderDrawable),
+                    (BitmapDrawable) typedArray.getDrawable(R.styleable.SwitchButton_sliderMaskDrawable)
+                );
+                typedArray.recycle();
+            }
         }
         setChecked(isChecked());
     }
@@ -157,20 +153,19 @@ public class SwitchButton extends CompoundButton {
             switch(event.getAction()){
                 case MotionEvent.ACTION_DOWN :
                     tempTotalSlideDistance = 0; //清空总滑动距离
-                    tempTouchX = event.getX();  //记录X轴位置
+                    tempTouchX = event.getX();  //记录X轴坐标
                     setPressed(true);   //激活按下状态
                     break;
                 case MotionEvent.ACTION_MOVE :
                     float newTouchX = event.getX();
-                    int currentDistance = (int) (newTouchX - tempTouchX);   //计算本次滑动距离
-                    tempTotalSlideDistance += currentDistance;    //记录总滑动距离
-                    setSlideX(slideX += currentDistance);   //更新X轴位置
-                    tempTouchX = newTouchX; //记录X轴位置
+                    tempTotalSlideDistance += setSlideX(slideX + ((int) (newTouchX - tempTouchX)));    //更新X轴坐标并记录总滑动距离
+                    tempTouchX = newTouchX; //记录X轴坐标
                     invalidate();
                     break;
                 case MotionEvent.ACTION_UP :
                     setPressed(false);  //取消按下状态
-                    if(Math.abs(tempTotalSlideDistance) >= 10){//当滑动距离大于0才会被认为这是一次有效的滑动操作，否则就是单机操作
+                    System.out.println("总距离："+tempTotalSlideDistance);
+                    if(Math.abs(tempTotalSlideDistance) > 0){//当滑动距离大于0才会被认为这是一次有效的滑动操作，否则就是单机操作
                         if(Math.abs(tempTotalSlideDistance) >= Math.abs(frameDrawable.getIntrinsicWidth() * minChangeDistanceScale)){//如果滑动距离大于等于最小切换距离就切换状态
                             setChecked(!isChecked());   //切换状态
                         }else{
@@ -219,7 +214,7 @@ public class SwitchButton extends CompoundButton {
             if(getWidth() > 0 && switchScroller != null){   //如果本次执行不是在onCreate()中
                 switchScroller.startScroll(checked);
             }else{
-                setSlideX(isChecked()?minSlideX:maxSlideX);  //直接修改X轴位置
+                setSlideX(isChecked() ? minSlideX : maxSlideX);  //直接修改X轴坐标
             }
         }
     }
@@ -251,7 +246,7 @@ public class SwitchButton extends CompoundButton {
         this.sliderDrawable.setCallback(this);
 
         this.minSlideX = (-1 * (statusDrawable.getIntrinsicWidth() - frameBitmap.getIntrinsicWidth()));  //初始化X轴最小值
-        setSlideX(isChecked()?minSlideX:maxSlideX);  //根据选中状态初始化默认位置
+        setSlideX(isChecked() ? minSlideX : maxSlideX);  //根据选中状态初始化默认坐标
 
         requestLayout();
     }
@@ -265,32 +260,36 @@ public class SwitchButton extends CompoundButton {
      * @param sliderMaskDrawableResId 滑块遮罩图片ID
      */
     public void setDrawableResIds(int frameDrawableResId, int statusDrawableResId, int statusMaskDrawableResId, int sliderDrawableResId, int sliderMaskDrawableResId){
-        setDrawables(
-            getResources().getDrawable(frameDrawableResId),
-            getResources().getDrawable(statusDrawableResId),
-            (BitmapDrawable) getResources().getDrawable(statusMaskDrawableResId),
-            getResources().getDrawable(sliderDrawableResId),
-            (BitmapDrawable) getResources().getDrawable(sliderMaskDrawableResId)
-        );
+        if(getResources() != null){
+            setDrawables(
+                getResources().getDrawable(frameDrawableResId),
+                getResources().getDrawable(statusDrawableResId),
+                (BitmapDrawable) getResources().getDrawable(statusMaskDrawableResId),
+                getResources().getDrawable(sliderDrawableResId),
+                (BitmapDrawable) getResources().getDrawable(sliderMaskDrawableResId)
+            );
+        }
     }
 
     public void setDuration(int duration) {
         this.duration = duration;
     }
 
-    /**
-     * 设置X轴位置
-     * @param slideX
-     */
-    private void setSlideX(int slideX) {
-        this.slideX = slideX;
-        if(this.slideX < minSlideX){
-            this.slideX = minSlideX;
-        }
+    public void setMinChangeDistanceScale(float minChangeDistanceScale) {
+        this.minChangeDistanceScale = minChangeDistanceScale;
+    }
 
-        if(this.slideX > maxSlideX){
-            this.slideX = maxSlideX;
-        }
+    /**
+     * 设置X轴坐标
+     * @param newSlideX 新的X轴坐标
+     * @return Xz轴坐标增加的值，例如newSlideX等于100，旧的X轴坐标为49，那么返回值就是51
+     */
+    private int setSlideX(int newSlideX) {
+        if(newSlideX < minSlideX) newSlideX = minSlideX;
+        if(newSlideX > maxSlideX) newSlideX = maxSlideX;
+        int addDistance = newSlideX - slideX;
+        this.slideX = newSlideX;
+        return addDistance;
     }
 
     /**
