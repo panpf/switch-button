@@ -132,11 +132,12 @@
 		<me.xiaopan.android.switchbutton.SwitchButton
 			style="@style/item"
 			android:id="@+id/switch_main_6"
-			android:text="娱乐播报娱乐播报娱乐播报娱乐播报娱乐播报"
+			android:text="娱乐播报娱乐播报娱乐播报娱乐播报娱乐播报娱乐播报娱乐播报"
 			android:textColor="@android:color/black"
 			android:background="@drawable/selector_preference_complete"
 			android:layout_marginTop="16dp"
 			android:drawablePadding="16dp"
+			app:withTextInterval="16dp"
 			app:frameDrawable="@drawable/button_sliding_frame"
 			app:stateDrawable="@drawable/selector_switch_status"
 			app:stateMaskDrawable="@drawable/button_sliding_state_mask"

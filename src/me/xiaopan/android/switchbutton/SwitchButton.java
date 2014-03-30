@@ -5,6 +5,7 @@ import android.content.res.TypedArray;
 import android.graphics.*;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -23,6 +24,7 @@ public class SwitchButton extends CompoundButton {
     private int tempMaxSlideX = 0;  //X轴最大坐标，用于防止往右边滑动时超出范围
     private int tempTotalSlideDistance;   //滑动距离，用于记录每次滑动的距离，在滑动结束后根据距离判断是否切换状态或者回滚
     private int duration = 200; //动画持续时间
+    private int withTextInterval;
     private float tempTouchX;   //记录上次触摸坐标，用于计算滑动距离
     private float minChangeDistanceScale = 0.2f;   //有效距离比例，例如按钮宽度为100，比例为0.3，那么只有当滑动距离大于等于(100*0.3)才会切换状态，否则就回滚
     private boolean tempAllowMode;  //是否允许滑动，当按下的位置不在按钮之内的时候就不允许滑动
@@ -65,6 +67,7 @@ public class SwitchButton extends CompoundButton {
         if(attrs != null && getContext() != null){
             TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.SwitchButton);
             if(typedArray != null){
+                withTextInterval = (int) typedArray.getDimension(R.styleable.SwitchButton_withTextInterval, 0.0f);
                 setDrawables(
                     typedArray.getDrawable(R.styleable.SwitchButton_frameDrawable),
                     typedArray.getDrawable(R.styleable.SwitchButton_stateDrawable),
@@ -273,6 +276,15 @@ public class SwitchButton extends CompoundButton {
                 setSlideX(isChecked() ? tempMinSlideX : tempMaxSlideX);  //直接修改X轴坐标
             }
         }
+    }
+
+    @Override
+    public int getCompoundPaddingRight() {
+        int padding = super.getCompoundPaddingRight() + frameDrawable.getIntrinsicWidth();
+        if (!TextUtils.isEmpty(getText())) {
+            padding += withTextInterval;
+        }
+        return padding;
     }
 
     /**
