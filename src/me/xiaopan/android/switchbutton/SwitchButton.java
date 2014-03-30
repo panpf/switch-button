@@ -16,24 +16,25 @@ import android.widget.Scroller;
  * 选择按钮
  */
 public class SwitchButton extends CompoundButton {
-    private int drawY;
-    private int slideX = 0; //X轴当前坐标，用于动态绘制图片显示坐标，实现滑动效果
-    private int minSlideX = 0;  //X轴最小坐标，用于防止往左边滑动时超出范围
-    private int maxSlideX = 0;  //X轴最大坐标，用于防止往右边滑动时超出范围
+    private int buttonDrawX;  //按钮在画布上的X坐标
+    private int buttonDrawY;  //按钮在画布上的Y坐标
+    private int tempSlideX = 0; //X轴当前坐标，用于动态绘制图片显示坐标，实现滑动效果
+    private int tempMinSlideX = 0;  //X轴最小坐标，用于防止往左边滑动时超出范围
+    private int tempMaxSlideX = 0;  //X轴最大坐标，用于防止往右边滑动时超出范围
     private int tempTotalSlideDistance;   //滑动距离，用于记录每次滑动的距离，在滑动结束后根据距离判断是否切换状态或者回滚
-    private int duration = 200;
+    private int duration = 200; //动画持续时间
     private float tempTouchX;   //记录上次触摸坐标，用于计算滑动距离
     private float minChangeDistanceScale = 0.2f;   //有效距离比例，例如按钮宽度为100，比例为0.3，那么只有当滑动距离大于等于(100*0.3)才会切换状态，否则就回滚
-    private boolean allowMode;  //是否允许滑动，当按下的位置不在按钮之内的时候就不允许滑动
+    private boolean tempAllowMode;  //是否允许滑动，当按下的位置不在按钮之内的时候就不允许滑动
     private Paint paint;    //画笔，用来绘制遮罩效果
+    private RectF buttonRectF;   //按钮的位置
     private Drawable frameDrawable; //框架层图片
     private Drawable statusDrawable;    //状态图片
     private BitmapDrawable statusMaskBitmapDrawable;    //状态遮罩图片
     private Drawable sliderDrawable;    //滑块图片
     private BitmapDrawable sliderMaskBitmapDrawable;    //滑块遮罩图片
-    private SwitchScroller switchScroller;
+    private SwitchScroller switchScroller;  //切换滚动器，用于实现平滑滚动效果
     private PorterDuffXfermode porterDuffXfermode;//遮罩类型
-    private RectF buttonRect;
 
     public SwitchButton(Context context) {
         this(context, null);
@@ -59,7 +60,7 @@ public class SwitchButton extends CompoundButton {
         paint.setColor(Color.RED);
         porterDuffXfermode = new PorterDuffXfermode(PorterDuff.Mode.SRC_IN);
         switchScroller = new SwitchScroller(getContext(), new AccelerateDecelerateInterpolator());
-        buttonRect = new RectF();
+        buttonRectF = new RectF();
 
         if(attrs != null && getContext() != null){
             TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.SwitchButton);
@@ -129,16 +130,25 @@ public class SwitchButton extends CompoundButton {
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
-        drawY = ((bottom - top) - frameDrawable.getIntrinsicHeight()) / 2;
-    }
-
-    private int getDrawX(){
         Drawable[] drawables = getCompoundDrawables();
         int drawableRightWidth = 0;
-        if(drawables != null && drawables.length > 2 && drawables[2] != null){
-            drawableRightWidth = drawables[2].getIntrinsicWidth() + getCompoundDrawablePadding();
+        int drawableTopHeight = 0;
+        int drawableBottomHeight = 0;
+        if(drawables != null){
+            if(drawables.length > 1 && drawables[1] != null){
+                drawableTopHeight = drawables[1].getIntrinsicHeight() + getCompoundDrawablePadding();
+            }
+            if(drawables.length > 2 && drawables[2] != null){
+                drawableRightWidth = drawables[2].getIntrinsicWidth() + getCompoundDrawablePadding();
+            }
+            if(drawables.length > 3 && drawables[3] != null){
+                drawableBottomHeight = drawables[3].getIntrinsicHeight() + getCompoundDrawablePadding();
+            }
         }
-        return (getWidth() - frameDrawable.getIntrinsicWidth() - getPaddingRight() - drawableRightWidth);
+
+        buttonDrawX = (getWidth() - (frameDrawable!=null?frameDrawable.getIntrinsicWidth():0) - getPaddingRight() - drawableRightWidth);
+        buttonDrawY = (getHeight() - (frameDrawable!=null?frameDrawable.getIntrinsicHeight():0) + drawableTopHeight - drawableBottomHeight) / 2;
+        buttonRectF.set(buttonDrawX, buttonDrawY, buttonDrawX + (frameDrawable != null ? frameDrawable.getIntrinsicWidth() : 0), buttonDrawY + (frameDrawable != null ? frameDrawable.getIntrinsicHeight() : 0));
     }
 
     @Override
@@ -147,7 +157,7 @@ public class SwitchButton extends CompoundButton {
 
         //保存图层并全体偏移，让paddingTop和paddingLeft生效
         canvas.save();
-        canvas.translate(getDrawX(), drawY);
+        canvas.translate(buttonDrawX, buttonDrawY);
 
         //绘制状态层
         if(statusDrawable != null && statusMaskBitmapDrawable != null){
@@ -157,7 +167,7 @@ public class SwitchButton extends CompoundButton {
             canvas.drawBitmap(statusMaskBitmapDrawable.getBitmap(), 0, 0, paint);
             //绘制状态图片按并应用遮罩效果
             paint.setXfermode(porterDuffXfermode);
-            canvas.drawBitmap(((BitmapDrawable) statusDrawable.getCurrent()).getBitmap(), slideX, 0, paint);
+            canvas.drawBitmap(((BitmapDrawable) statusDrawable.getCurrent()).getBitmap(), tempSlideX, 0, paint);
             paint.setXfermode(null);
             //融合图层
             canvas.restoreToCount(src);
@@ -176,7 +186,7 @@ public class SwitchButton extends CompoundButton {
             canvas.drawBitmap(sliderMaskBitmapDrawable.getBitmap(), 0, 0, paint);
             //绘制滑块图片按并应用遮罩效果
             paint.setXfermode(porterDuffXfermode);
-            canvas.drawBitmap(((BitmapDrawable) sliderDrawable.getCurrent()).getBitmap(), slideX, 0, paint);
+            canvas.drawBitmap(((BitmapDrawable) sliderDrawable.getCurrent()).getBitmap(), tempSlideX, 0, paint);
             paint.setXfermode(null);
             //融合图层
             canvas.restoreToCount(src);
@@ -192,16 +202,17 @@ public class SwitchButton extends CompoundButton {
         if(isEnabled()){
             switch(event.getAction()){
                 case MotionEvent.ACTION_DOWN :
-                    setPressed(true);   //激活按下状态
-                    buttonRect.set(getDrawX(), drawY, getDrawX() + frameDrawable.getIntrinsicWidth(), drawY + frameDrawable.getIntrinsicHeight());
-                    allowMode = buttonRect.contains(event.getX(), event.getY());   //判断按下的位置是否在按钮的范围之内
+                    tempAllowMode = buttonRectF.contains(event.getX(), event.getY());   //判断按下的位置是否在按钮的范围之内
+                    if(!tempAllowMode){
+                        setPressed(true);   //激活按下状态
+                    }
                     tempTotalSlideDistance = 0; //清空总滑动距离
                     tempTouchX = event.getX();  //记录X轴坐标
                     break;
                 case MotionEvent.ACTION_MOVE :
-                    if(allowMode){
+                    if(tempAllowMode){
                         float newTouchX = event.getX();
-                        tempTotalSlideDistance += setSlideX(slideX + ((int) (newTouchX - tempTouchX)));    //更新X轴坐标并记录总滑动距离
+                        tempTotalSlideDistance += setSlideX(tempSlideX + ((int) (newTouchX - tempTouchX)));    //更新X轴坐标并记录总滑动距离
                         tempTouchX = newTouchX; //记录X轴坐标
                         invalidate();
                     }
@@ -259,7 +270,7 @@ public class SwitchButton extends CompoundButton {
             if(getWidth() > 0 && switchScroller != null){   //如果本次执行不是在onCreate()中
                 switchScroller.startScroll(checked);
             }else{
-                setSlideX(isChecked() ? minSlideX : maxSlideX);  //直接修改X轴坐标
+                setSlideX(isChecked() ? tempMinSlideX : tempMaxSlideX);  //直接修改X轴坐标
             }
         }
     }
@@ -290,8 +301,8 @@ public class SwitchButton extends CompoundButton {
         this.sliderDrawable.setBounds(0, 0, this.sliderDrawable.getIntrinsicWidth(), this.sliderDrawable.getIntrinsicHeight());
         this.sliderDrawable.setCallback(this);
 
-        this.minSlideX = (-1 * (statusDrawable.getIntrinsicWidth() - frameBitmap.getIntrinsicWidth()));  //初始化X轴最小值
-        setSlideX(isChecked() ? minSlideX : maxSlideX);  //根据选中状态初始化默认坐标
+        this.tempMinSlideX = (-1 * (statusDrawable.getIntrinsicWidth() - frameBitmap.getIntrinsicWidth()));  //初始化X轴最小值
+        setSlideX(isChecked() ? tempMinSlideX : tempMaxSlideX);  //根据选中状态初始化默认坐标
 
         requestLayout();
     }
@@ -330,10 +341,10 @@ public class SwitchButton extends CompoundButton {
      * @return Xz轴坐标增加的值，例如newSlideX等于100，旧的X轴坐标为49，那么返回值就是51
      */
     private int setSlideX(int newSlideX) {
-        if(newSlideX < minSlideX) newSlideX = minSlideX;
-        if(newSlideX > maxSlideX) newSlideX = maxSlideX;
-        int addDistance = newSlideX - slideX;
-        this.slideX = newSlideX;
+        if(newSlideX < tempMinSlideX) newSlideX = tempMinSlideX;
+        if(newSlideX > tempMaxSlideX) newSlideX = tempMaxSlideX;
+        int addDistance = newSlideX - tempSlideX;
+        this.tempSlideX = newSlideX;
         return addDistance;
     }
 
@@ -352,7 +363,7 @@ public class SwitchButton extends CompoundButton {
          * @param checked 是否选中
          */
         public void startScroll(boolean checked){
-            scroller.startScroll(slideX, 0, (checked?minSlideX:maxSlideX) - slideX, 0, duration);
+            scroller.startScroll(tempSlideX, 0, (checked? tempMinSlideX : tempMaxSlideX) - tempSlideX, 0, duration);
             post(this);
         }
 
