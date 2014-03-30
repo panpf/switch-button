@@ -14,7 +14,7 @@ import android.widget.CompoundButton;
 import android.widget.Scroller;
 
 /**
- * 选择按钮
+ * 开关按钮
  */
 public class SwitchButton extends CompoundButton {
     private int buttonDrawX;  //按钮在画布上的X坐标
@@ -87,16 +87,16 @@ public class SwitchButton extends CompoundButton {
         int measureWidth;
         switch (MeasureSpec.getMode(widthMeasureSpec)) {
             case MeasureSpec.AT_MOST://如果widthSize是当前视图可使用的最大宽度
-                measureWidth = (frameDrawable != null? frameDrawable.getIntrinsicWidth():0) + getPaddingLeft() + getPaddingRight();
+                measureWidth = getCompoundPaddingLeft() + getCompoundPaddingRight();
                 break;
             case MeasureSpec.EXACTLY://如果widthSize是当前视图可使用的绝对宽度
                 measureWidth = MeasureSpec.getSize(widthMeasureSpec);
                 break;
             case MeasureSpec.UNSPECIFIED://如果widthSize对当前视图宽度的计算没有任何参考意义
-                measureWidth = (frameDrawable != null? frameDrawable.getIntrinsicWidth():0) + getPaddingLeft() + getPaddingRight();
+                measureWidth = getCompoundPaddingLeft() + getCompoundPaddingRight();
                 break;
             default:
-                measureWidth = (frameDrawable != null? frameDrawable.getIntrinsicWidth():0) + getPaddingLeft() + getPaddingRight();
+                measureWidth = getCompoundPaddingLeft() + getCompoundPaddingRight();
                 break;
         }
 
@@ -104,16 +104,16 @@ public class SwitchButton extends CompoundButton {
         int measureHeight;
         switch (MeasureSpec.getMode(heightMeasureSpec)) {
             case MeasureSpec.AT_MOST://如果heightSize是当前视图可使用的最大宽度
-                measureHeight = (frameDrawable != null? frameDrawable.getIntrinsicHeight():0) + getPaddingTop() + getPaddingBottom();
+                measureHeight = (frameDrawable != null? frameDrawable.getIntrinsicHeight():0) + getCompoundPaddingTop() + getCompoundPaddingBottom();
                 break;
             case MeasureSpec.EXACTLY://如果heightSize是当前视图可使用的绝对宽度
                 measureHeight = MeasureSpec.getSize(heightMeasureSpec);
                 break;
             case MeasureSpec.UNSPECIFIED://如果heightSize对当前视图宽度的计算没有任何参考意义
-                measureHeight = (frameDrawable != null? frameDrawable.getIntrinsicHeight():0) + getPaddingTop() + getPaddingBottom();
+                measureHeight = (frameDrawable != null? frameDrawable.getIntrinsicHeight():0) + getCompoundPaddingTop() + getCompoundPaddingBottom();
                 break;
             default:
-                measureHeight = (frameDrawable != null? frameDrawable.getIntrinsicHeight():0) + getPaddingTop() + getPaddingBottom();
+                measureHeight = (frameDrawable != null? frameDrawable.getIntrinsicHeight():0) + getCompoundPaddingTop() + getCompoundPaddingBottom();
                 break;
         }
 
@@ -270,17 +270,18 @@ public class SwitchButton extends CompoundButton {
         boolean changed = checked != isChecked();
         super.setChecked(checked);
         if(changed){
-            if(getWidth() > 0 && switchScroller != null){   //如果本次执行不是在onCreate()中
+            if(getWidth() > 0 && switchScroller != null){   //如果已经绘制完成
                 switchScroller.startScroll(checked);
             }else{
-                setSlideX(isChecked() ? tempMinSlideX : tempMaxSlideX);  //直接修改X轴坐标
+                setSlideX(isChecked() ? tempMinSlideX : tempMaxSlideX);  //直接修改X轴坐标，因为尚未绘制完成的时候，动画执行效果不理想，所以直接修改坐标，而不执行动画
             }
         }
     }
 
     @Override
     public int getCompoundPaddingRight() {
-        int padding = super.getCompoundPaddingRight() + frameDrawable.getIntrinsicWidth();
+        //重写此方法实现让文本提前换行，避免当文本过长时被按钮给盖住
+        int padding = super.getCompoundPaddingRight() + (frameDrawable!=null?frameDrawable.getIntrinsicWidth():0);
         if (!TextUtils.isEmpty(getText())) {
             padding += withTextInterval;
         }
@@ -339,12 +340,29 @@ public class SwitchButton extends CompoundButton {
         }
     }
 
+    /**
+     * 设置动画持续时间
+     * @param duration
+     */
     public void setDuration(int duration) {
         this.duration = duration;
     }
 
+    /**
+     * 设置有效距离比例
+     * @param minChangeDistanceScale 有效距离比例，例如按钮宽度为100，比例为0.3，那么只有当滑动距离大于等于(100*0.3)才会切换状态，否则就回滚
+     */
     public void setMinChangeDistanceScale(float minChangeDistanceScale) {
         this.minChangeDistanceScale = minChangeDistanceScale;
+    }
+
+    /**
+     * 设置按钮和文本之间的间距
+     * @param withTextInterval 按钮和文本之间的间距，当有文本的时候此参数才能派上用场
+     */
+    public void setWithTextInterval(int withTextInterval) {
+        this.withTextInterval = withTextInterval;
+        requestLayout();
     }
 
     /**
@@ -353,8 +371,10 @@ public class SwitchButton extends CompoundButton {
      * @return Xz轴坐标增加的值，例如newSlideX等于100，旧的X轴坐标为49，那么返回值就是51
      */
     private int setSlideX(int newSlideX) {
+        //防止滑动超出范围
         if(newSlideX < tempMinSlideX) newSlideX = tempMinSlideX;
         if(newSlideX > tempMaxSlideX) newSlideX = tempMaxSlideX;
+        //计算本次距离增量
         int addDistance = newSlideX - tempSlideX;
         this.tempSlideX = newSlideX;
         return addDistance;
