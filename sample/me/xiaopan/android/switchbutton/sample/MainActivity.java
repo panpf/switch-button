@@ -2,10 +2,10 @@ package me.xiaopan.android.switchbutton.sample;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import me.xiaopan.android.switchbutton.R;
-import android.view.View;
 
 public class MainActivity extends Activity implements View.OnClickListener{
     private CompoundButton compoundButton1;
