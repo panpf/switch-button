@@ -10,6 +10,7 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.MotionEvent;
+import android.view.ViewConfiguration;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.CompoundButton;
 import android.widget.Scroller;
@@ -18,17 +19,21 @@ import android.widget.Scroller;
  * 开关按钮
  */
 public class SwitchButton extends CompoundButton {
-    private int buttonDrawX;  //按钮在画布上的X坐标
-    private int buttonDrawY;  //按钮在画布上的Y坐标
+    private static final int TOUCH_MODE_IDLE = 0;
+    private static final int TOUCH_MODE_DOWN = 1;
+    private static final int TOUCH_MODE_DRAGGING = 2;
+    private int buttonLeft;  //按钮在画布上的X坐标
+    private int buttonTop;  //按钮在画布上的Y坐标
     private int tempSlideX = 0; //X轴当前坐标，用于动态绘制图片显示坐标，实现滑动效果
     private int tempMinSlideX = 0;  //X轴最小坐标，用于防止往左边滑动时超出范围
     private int tempMaxSlideX = 0;  //X轴最大坐标，用于防止往右边滑动时超出范围
     private int tempTotalSlideDistance;   //滑动距离，用于记录每次滑动的距离，在滑动结束后根据距离判断是否切换状态或者回滚
     private int duration = 200; //动画持续时间
-    private int withTextInterval;
-    private float tempTouchX;   //记录上次触摸坐标，用于计算滑动距离
+    private int touchMode; //触摸模式，用来在处理滑动事件的时候区分操作
+    private int touchSlop;
+    private int withTextInterval;   //文字和按钮之间的间距
+    private float touchX;   //记录上次触摸坐标，用于计算滑动距离
     private float minChangeDistanceScale = 0.2f;   //有效距离比例，例如按钮宽度为100，比例为0.3，那么只有当滑动距离大于等于(100*0.3)才会切换状态，否则就回滚
-    private boolean tempAllowMode;  //是否允许滑动，当按下的位置不在按钮之内的时候就不允许滑动
     private Paint paint;    //画笔，用来绘制遮罩效果
     private RectF buttonRectF;   //按钮的位置
     private Drawable frameDrawable; //框架层图片
@@ -79,6 +84,9 @@ public class SwitchButton extends CompoundButton {
                 typedArray.recycle();
             }
         }
+
+        ViewConfiguration config = ViewConfiguration.get(getContext());
+        touchSlop = config.getScaledTouchSlop();
         setChecked(isChecked());
     }
 
@@ -150,108 +158,143 @@ public class SwitchButton extends CompoundButton {
             }
         }
 
-        buttonDrawX = (getWidth() - (frameDrawable!=null?frameDrawable.getIntrinsicWidth():0) - getPaddingRight() - drawableRightWidth);
-        buttonDrawY = (getHeight() - (frameDrawable!=null?frameDrawable.getIntrinsicHeight():0) + drawableTopHeight - drawableBottomHeight) / 2;
-        buttonRectF.set(buttonDrawX, buttonDrawY, buttonDrawX + (frameDrawable != null ? frameDrawable.getIntrinsicWidth() : 0), buttonDrawY + (frameDrawable != null ? frameDrawable.getIntrinsicHeight() : 0));
+        buttonLeft = (getWidth() - (frameDrawable!=null?frameDrawable.getIntrinsicWidth():0) - getPaddingRight() - drawableRightWidth);
+        buttonTop = (getHeight() - (frameDrawable!=null?frameDrawable.getIntrinsicHeight():0) + drawableTopHeight - drawableBottomHeight) / 2;
+        buttonRectF.set(buttonLeft, buttonTop, buttonLeft + (frameDrawable != null ? frameDrawable.getIntrinsicWidth() : 0), buttonTop + (frameDrawable != null ? frameDrawable.getIntrinsicHeight() : 0));
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        //保存图层并全体偏移，让paddingTop和paddingLeft生效
+        // 保存图层并全体偏移，让paddingTop和paddingLeft生效
         canvas.save();
-        canvas.translate(buttonDrawX, buttonDrawY);
+        canvas.translate(buttonLeft, buttonTop);
 
-        //绘制状态层
+        // 绘制状态层
         if(stateDrawable != null && stateMaskDrawable != null){
             Bitmap stateBitmap = getBitmapFromDrawable(stateDrawable);
             if(stateMaskDrawable != null && stateBitmap != null && !stateBitmap.isRecycled()){
-                //保存并创建一个新的透明层，如果不这样做的话，画出来的背景会是黑的
+                // 保存并创建一个新的透明层，如果不这样做的话，画出来的背景会是黑的
                 int src = canvas.saveLayer(0, 0, getWidth(), getHeight(), paint, Canvas.MATRIX_SAVE_FLAG | Canvas.CLIP_SAVE_FLAG | Canvas.HAS_ALPHA_LAYER_SAVE_FLAG | Canvas.FULL_COLOR_LAYER_SAVE_FLAG | Canvas.CLIP_TO_LAYER_SAVE_FLAG);
-                //绘制遮罩层
+                // 绘制遮罩层
                 stateMaskDrawable.draw(canvas);
-                //绘制状态图片按并应用遮罩效果
+                // 绘制状态图片按并应用遮罩效果
                 paint.setXfermode(porterDuffXfermode);
                 canvas.drawBitmap(stateBitmap, tempSlideX, 0, paint);
                 paint.setXfermode(null);
-                //融合图层
+                // 融合图层
                 canvas.restoreToCount(src);
             }
         }
 
-        //绘制框架层
+        // 绘制框架层
         if(frameDrawable != null){
             frameDrawable.draw(canvas);
         }
 
-        //绘制滑块层
+        // 绘制滑块层
         if(sliderDrawable != null && sliderMaskDrawable != null){
             Bitmap sliderBitmap = getBitmapFromDrawable(sliderDrawable);
             if(sliderMaskDrawable != null && sliderBitmap != null && !sliderBitmap.isRecycled()){
-                //保存并创建一个新的透明层，如果不这样做的话，画出来的背景会是黑的
+                // 保存并创建一个新的透明层，如果不这样做的话，画出来的背景会是黑的
                 int src = canvas.saveLayer(0, 0, getWidth(), getHeight(), paint, Canvas.MATRIX_SAVE_FLAG | Canvas.CLIP_SAVE_FLAG | Canvas.HAS_ALPHA_LAYER_SAVE_FLAG | Canvas.FULL_COLOR_LAYER_SAVE_FLAG | Canvas.CLIP_TO_LAYER_SAVE_FLAG);
-                //绘制遮罩层
+                // 绘制遮罩层
                 sliderMaskDrawable.draw(canvas);
-                //绘制滑块图片按并应用遮罩效果
+                // 绘制滑块图片按并应用遮罩效果
                 paint.setXfermode(porterDuffXfermode);
                 canvas.drawBitmap(sliderBitmap, tempSlideX, 0, paint);
                 paint.setXfermode(null);
-                //融合图层
+                // 融合图层
                 canvas.restoreToCount(src);
             }
         }
 
-        //融合图层
+        // 融合图层
         canvas.restore();
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        super.onTouchEvent(event);
-        if(isEnabled()){
-            switch(event.getAction()){
-                case MotionEvent.ACTION_DOWN :
-                    tempAllowMode = buttonRectF.contains(event.getX(), event.getY());   //判断按下的位置是否在按钮的范围之内
-                    if(!tempAllowMode){
-                        setPressed(true);   //激活按下状态
-                    }
-                    tempTotalSlideDistance = 0; //清空总滑动距离
-                    tempTouchX = event.getX();  //记录X轴坐标
-                    break;
-                case MotionEvent.ACTION_MOVE :
-                    if(tempAllowMode){
-                        float newTouchX = event.getX();
-                        tempTotalSlideDistance += setSlideX(tempSlideX + ((int) (newTouchX - tempTouchX)));    //更新X轴坐标并记录总滑动距离
-                        tempTouchX = newTouchX; //记录X轴坐标
-                        invalidate();
-                    }
-                    break;
-                case MotionEvent.ACTION_UP :
-                    setPressed(false);  //取消按下状态
-                    if(Math.abs(tempTotalSlideDistance) > 0){//当滑动距离大于0才会被认为这是一次有效的滑动操作，否则就是单机操作
-                        if(Math.abs(tempTotalSlideDistance) >= Math.abs(frameDrawable.getIntrinsicWidth() * minChangeDistanceScale)){//如果滑动距离大于等于最小切换距离就切换状态
-                            setChecked(!isChecked());   //切换状态
-                        }else{
-                            switchScroller.startScroll(isChecked());//本次滑动无效，回滚
-                        }
-                    }else{
-                        setChecked(!isChecked());   //单击切换状态
-                    }
-                    break;
-                case MotionEvent.ACTION_CANCEL :
-                    setPressed(false);  //取消按下状态
-                    switchScroller.startScroll(isChecked()); //回滚
-                    break;
-                case MotionEvent.ACTION_OUTSIDE :
-                    setPressed(false);  //取消按下状态
-                    switchScroller.startScroll(isChecked()); //回滚
-                    break;
+        switch(event.getActionMasked()){
+            case MotionEvent.ACTION_DOWN : {
+                // 如果按钮当前可用并且按下位置正好在按钮之内
+                if(isEnabled() && buttonRectF.contains(event.getX(), event.getY())){
+                    touchMode = TOUCH_MODE_DOWN;
+                    tempTotalSlideDistance = 0; // 清空总滑动距离
+                    touchX = event.getX();  // 记录X轴坐标
+                }else{
+                    setPressed(true);   // 激活按下状态
+                }
+                break;
             }
-            return true;
-        }else{
-            return false;
+
+            case MotionEvent.ACTION_MOVE : {
+                switch(touchMode){
+                    case TOUCH_MODE_IDLE : {
+                        break;
+                    }
+                    case TOUCH_MODE_DOWN : {
+                        final float x = event.getX();
+                        if (Math.abs(x - touchX) > touchSlop) {
+                            touchMode = TOUCH_MODE_DRAGGING;
+                            // 禁值拦截触摸事件，
+                            // 如果不加这段代码的话，当被ScrollView包括的时候，你会发现，当你在此按钮上按下，
+                            // 紧接着滑动的时候ScrollView会跟着滑动，然后按钮的事件就丢失了，这会造成很难完成滑动操作
+                            // 这样一来用户会抓狂的
+                            getParent().requestDisallowInterceptTouchEvent(true);
+                            touchX = x;
+                            return true;
+                        }
+                        break;
+                    }
+                    case TOUCH_MODE_DRAGGING : {
+                        float newTouchX = event.getX();
+                        tempTotalSlideDistance += setSlideX(tempSlideX + ((int) (newTouchX - touchX)));    // 更新X轴坐标并记录总滑动距离
+                        touchX = newTouchX;
+                        invalidate();
+                        return true;
+                    }
+                }
+                break;
+            }
+
+            case MotionEvent.ACTION_UP :{
+                setPressed(false);  //取消按下状态
+                //如果这是一次有效的滑动操作，否则就是单击操作
+                if(touchMode == TOUCH_MODE_DRAGGING){
+                    touchMode = TOUCH_MODE_IDLE;
+                    //如果滑动距离大于等于最小切换距离就切换状态，否则滑动无效，回滚
+                    if(Math.abs(tempTotalSlideDistance) >= Math.abs(frameDrawable.getIntrinsicWidth() * minChangeDistanceScale)){
+                        setChecked(!isChecked());   //切换状态
+                    }else{
+                        switchScroller.startScroll(isChecked());
+                    }
+                    return true;
+                }else{
+                    touchMode = TOUCH_MODE_IDLE;
+                    setChecked(!isChecked());   //单击切换状态
+                }
+                break;
+            }
+
+            case MotionEvent.ACTION_CANCEL :
+            case MotionEvent.ACTION_OUTSIDE : {
+                setPressed(false);  //取消按下状态
+                if (touchMode == TOUCH_MODE_DRAGGING) {
+                    touchMode = TOUCH_MODE_IDLE;
+                    switchScroller.startScroll(isChecked()); //回滚
+                    return true;
+                }else{
+                    touchMode = TOUCH_MODE_IDLE;
+                    switchScroller.startScroll(isChecked()); //回滚
+                }
+                break;
+            }
         }
+
+        super.onTouchEvent(event);
+        return isEnabled()?true:false;
     }
 
     @Override
