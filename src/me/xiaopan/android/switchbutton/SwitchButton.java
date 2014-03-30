@@ -6,6 +6,7 @@ import android.graphics.*;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.DrawableContainer;
+import android.os.Build;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -43,6 +44,7 @@ public class SwitchButton extends CompoundButton {
     private Drawable sliderMaskDrawable;    //滑块遮罩图片
     private SwitchScroller switchScroller;  //切换滚动器，用于实现平滑滚动效果
     private PorterDuffXfermode porterDuffXfermode;//遮罩类型
+    private OnClickListener onClickListener;
 
     public SwitchButton(Context context) {
         this(context, null);
@@ -88,6 +90,7 @@ public class SwitchButton extends CompoundButton {
         ViewConfiguration config = ViewConfiguration.get(getContext());
         touchSlop = config.getScaledTouchSlop();
         setChecked(isChecked());
+        setClickable(false);
     }
 
     @Override
@@ -216,15 +219,17 @@ public class SwitchButton extends CompoundButton {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        switch(event.getActionMasked()){
+        switch(event.getAction()){
             case MotionEvent.ACTION_DOWN : {
                 // 如果按钮当前可用并且按下位置正好在按钮之内
-                if(isEnabled() && buttonRectF.contains(event.getX(), event.getY())){
-                    touchMode = TOUCH_MODE_DOWN;
-                    tempTotalSlideDistance = 0; // 清空总滑动距离
-                    touchX = event.getX();  // 记录X轴坐标
-                }else{
-                    setPressed(true);   // 激活按下状态
+                if(isEnabled() ){
+                    if(buttonRectF.contains(event.getX(), event.getY())){
+                        touchMode = TOUCH_MODE_DOWN;
+                        tempTotalSlideDistance = 0; // 清空总滑动距离
+                        touchX = event.getX();  // 记录X轴坐标
+                    }else{
+                        setPressed(true);
+                    }
                 }
                 break;
             }
@@ -238,7 +243,7 @@ public class SwitchButton extends CompoundButton {
                         final float x = event.getX();
                         if (Math.abs(x - touchX) > touchSlop) {
                             touchMode = TOUCH_MODE_DRAGGING;
-                            // 禁值拦截触摸事件，
+                            // 禁值拦截触摸事件
                             // 如果不加这段代码的话，当被ScrollView包括的时候，你会发现，当你在此按钮上按下，
                             // 紧接着滑动的时候ScrollView会跟着滑动，然后按钮的事件就丢失了，这会造成很难完成滑动操作
                             // 这样一来用户会抓狂的
@@ -260,7 +265,7 @@ public class SwitchButton extends CompoundButton {
             }
 
             case MotionEvent.ACTION_UP :{
-                setPressed(false);  //取消按下状态
+                setPressed(false);
                 //如果这是一次有效的滑动操作，否则就是单击操作
                 if(touchMode == TOUCH_MODE_DRAGGING){
                     touchMode = TOUCH_MODE_IDLE;
@@ -270,24 +275,26 @@ public class SwitchButton extends CompoundButton {
                     }else{
                         switchScroller.startScroll(isChecked());
                     }
-                    return true;
-                }else{
+                }else if(touchMode == TOUCH_MODE_DOWN){
                     touchMode = TOUCH_MODE_IDLE;
                     setChecked(!isChecked());   //单击切换状态
+                }else{
+                    touchMode = TOUCH_MODE_IDLE;
+                    if(onClickListener != null){
+                        onClickListener.onClick(this);
+                    }
                 }
                 break;
             }
 
             case MotionEvent.ACTION_CANCEL :
             case MotionEvent.ACTION_OUTSIDE : {
-                setPressed(false);  //取消按下状态
+                setPressed(false);
                 if (touchMode == TOUCH_MODE_DRAGGING) {
                     touchMode = TOUCH_MODE_IDLE;
                     switchScroller.startScroll(isChecked()); //回滚
-                    return true;
                 }else{
                     touchMode = TOUCH_MODE_IDLE;
-                    switchScroller.startScroll(isChecked()); //回滚
                 }
                 break;
             }
@@ -298,25 +305,38 @@ public class SwitchButton extends CompoundButton {
     }
 
     @Override
+    public void setOnClickListener(OnClickListener l) {
+        onClickListener = l;
+        setClickable(false);
+    }
+
+    @Override
     protected void drawableStateChanged() {
         super.drawableStateChanged();
         int[] drawableState = getDrawableState();
-        if(frameDrawable != null){
-            frameDrawable.setState(drawableState);  //更新框架图片的状态
-        }
-        if(stateDrawable != null){
-            stateDrawable.setState(drawableState); //更新状态图片的状态
-        }
-        if(stateMaskDrawable != null){
-            stateMaskDrawable.setState(drawableState); //更新状态遮罩图片的状态
-        }
-        if(sliderDrawable != null){
-            sliderDrawable.setState(drawableState); //更新滑块图片的状态
-        }
-        if(sliderMaskDrawable != null){
-            sliderMaskDrawable.setState(drawableState); //更新滑块遮罩图片的状态
-        }
+        if(frameDrawable != null) frameDrawable.setState(drawableState);  //更新框架图片的状态
+        if(stateDrawable != null) stateDrawable.setState(drawableState); //更新状态图片的状态
+        if(stateMaskDrawable != null) stateMaskDrawable.setState(drawableState); //更新状态遮罩图片的状态
+        if(sliderDrawable != null) sliderDrawable.setState(drawableState); //更新滑块图片的状态
+        if(sliderMaskDrawable != null) sliderMaskDrawable.setState(drawableState); //更新滑块遮罩图片的状态
         invalidate();
+    }
+
+    @Override
+    protected boolean verifyDrawable(Drawable who) {
+        return super.verifyDrawable(who) || who == frameDrawable || who == stateDrawable || who == stateMaskDrawable || who == sliderDrawable || who == sliderMaskDrawable;
+    }
+
+    @Override
+    public void jumpDrawablesToCurrentState() {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB){
+            super.jumpDrawablesToCurrentState();
+            if(frameDrawable != null) frameDrawable.jumpToCurrentState();
+            if(stateDrawable != null) stateDrawable.jumpToCurrentState();
+            if(stateMaskDrawable != null) stateMaskDrawable.jumpToCurrentState();
+            if(sliderDrawable != null) sliderDrawable.jumpToCurrentState();
+            if(sliderMaskDrawable != null) sliderMaskDrawable.jumpToCurrentState();
+        }
     }
 
     @Override
