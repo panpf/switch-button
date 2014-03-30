@@ -29,11 +29,11 @@
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:checked="true"
-	            app:frameDrawable="@drawable/button_sliding_frame"
-	            app:stateDrawable="@drawable/selector_switch_status"
-	            app:stateMaskDrawable="@drawable/button_sliding_state_mask"
+	            app:frameDrawable="@drawable/switch_frame"
+	            app:stateDrawable="@drawable/selector_switch_state"
+	            app:stateMaskDrawable="@drawable/switch_state_mask"
 	            app:sliderDrawable="@drawable/selector_switch_slider"
-	            app:sliderMaskDrawable="@drawable/button_sliding_slider_mask"/>
+	            app:sliderMaskDrawable="@drawable/switch_slider_mask"/>
 	    </LinearLayout>
 
 	    <LinearLayout
@@ -53,11 +53,11 @@
 	            android:id="@+id/switch_main_2"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
-	            app:frameDrawable="@drawable/button_sliding_frame"
-	            app:stateDrawable="@drawable/selector_switch_status"
-	            app:stateMaskDrawable="@drawable/button_sliding_state_mask"
+	            app:frameDrawable="@drawable/switch_frame"
+	            app:stateDrawable="@drawable/selector_switch_state"
+	            app:stateMaskDrawable="@drawable/switch_state_mask"
 	            app:sliderDrawable="@drawable/selector_switch_slider"
-	            app:sliderMaskDrawable="@drawable/button_sliding_slider_mask"/>
+	            app:sliderMaskDrawable="@drawable/switch_slider_mask"/>
 	    </LinearLayout>
 
 	    <LinearLayout
@@ -76,11 +76,11 @@
 	            android:id="@+id/switch_main_3"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
-	            app:frameDrawable="@drawable/button_sliding_frame"
-	            app:stateDrawable="@drawable/selector_switch_status"
-	            app:stateMaskDrawable="@drawable/button_sliding_state_mask"
+	            app:frameDrawable="@drawable/switch_frame"
+	            app:stateDrawable="@drawable/selector_switch_state"
+	            app:stateMaskDrawable="@drawable/switch_state_mask"
 	            app:sliderDrawable="@drawable/selector_switch_slider"
-	            app:sliderMaskDrawable="@drawable/button_sliding_slider_mask"/>
+	            app:sliderMaskDrawable="@drawable/switch_slider_mask"/>
 	    </LinearLayout>
 
 	    <LinearLayout
@@ -99,11 +99,11 @@
 	            android:id="@+id/switch_main_4"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
-	            app:frameDrawable="@drawable/button_sliding_frame"
-	            app:stateDrawable="@drawable/selector_switch_status"
-	            app:stateMaskDrawable="@drawable/button_sliding_state_mask"
+	            app:frameDrawable="@drawable/switch_frame"
+	            app:stateDrawable="@drawable/selector_switch_state"
+	            app:stateMaskDrawable="@drawable/switch_state_mask"
 	            app:sliderDrawable="@drawable/selector_switch_slider"
-	            app:sliderMaskDrawable="@drawable/button_sliding_slider_mask"/>
+	            app:sliderMaskDrawable="@drawable/switch_slider_mask"/>
 	    </LinearLayout>
 
 	    <LinearLayout
@@ -122,27 +122,27 @@
 	            android:id="@+id/switch_main_5"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
-	            app:frameDrawable="@drawable/button_sliding_frame"
-	            app:stateDrawable="@drawable/selector_switch_status"
-	            app:stateMaskDrawable="@drawable/button_sliding_state_mask"
+	            app:frameDrawable="@drawable/switch_frame"
+	            app:stateDrawable="@drawable/selector_switch_state"
+	            app:stateMaskDrawable="@drawable/switch_state_mask"
 	            app:sliderDrawable="@drawable/selector_switch_slider"
-	            app:sliderMaskDrawable="@drawable/button_sliding_slider_mask"/>
+	            app:sliderMaskDrawable="@drawable/switch_slider_mask"/>
 	    </LinearLayout>
 
 		<me.xiaopan.android.switchbutton.SwitchButton
 			style="@style/item"
-			android:id="@+id/switch_main_6"
-			android:text="娱乐播报娱乐播报娱乐播报娱乐播报娱乐播报娱乐播报娱乐播报"
-			android:textColor="@android:color/black"
-			android:background="@drawable/selector_preference_complete"
-			android:layout_marginTop="16dp"
-			android:drawablePadding="16dp"
-			app:withTextInterval="16dp"
-			app:frameDrawable="@drawable/button_sliding_frame"
-			app:stateDrawable="@drawable/selector_switch_status"
-			app:stateMaskDrawable="@drawable/button_sliding_state_mask"
-			app:sliderDrawable="@drawable/selector_switch_slider"
-			app:sliderMaskDrawable="@drawable/button_sliding_slider_mask"/>
+		android:id="@+id/switch_main_6"
+		android:text="娱乐播报娱乐播报娱乐播报娱乐播报娱乐播报娱乐播报娱乐播报"
+		android:textColor="@android:color/black"
+		android:background="@drawable/selector_preference_complete"
+		android:layout_marginTop="16dp"
+		android:drawablePadding="16dp"
+		app:withTextInterval="16dp"
+		app:frameDrawable="@drawable/switch_frame"
+		app:stateDrawable="@drawable/selector_switch_state"
+		app:stateMaskDrawable="@drawable/switch_state_mask"
+		app:sliderDrawable="@drawable/selector_switch_slider"
+		app:sliderMaskDrawable="@drawable/switch_slider_mask"/>
 
 		<Switch
 			style="@style/item"
