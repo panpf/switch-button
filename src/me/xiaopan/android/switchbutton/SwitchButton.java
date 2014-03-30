@@ -6,12 +6,17 @@ import android.graphics.*;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.CompoundButton;
 import android.widget.Scroller;
 
+/**
+ * 选择按钮
+ */
 public class SwitchButton extends CompoundButton {
+    private int drawY;
     private int slideX = 0; //X轴当前坐标，用于动态绘制图片显示坐标，实现滑动效果
     private int minSlideX = 0;  //X轴最小坐标，用于防止往左边滑动时超出范围
     private int maxSlideX = 0;  //X轴最大坐标，用于防止往右边滑动时超出范围
@@ -19,6 +24,7 @@ public class SwitchButton extends CompoundButton {
     private int duration = 200;
     private float tempTouchX;   //记录上次触摸坐标，用于计算滑动距离
     private float minChangeDistanceScale = 0.2f;   //有效距离比例，例如按钮宽度为100，比例为0.3，那么只有当滑动距离大于等于(100*0.3)才会切换状态，否则就回滚
+    private boolean allowMode;  //是否允许滑动，当按下的位置不在按钮之内的时候就不允许滑动
     private Paint paint;    //画笔，用来绘制遮罩效果
     private Drawable frameDrawable; //框架层图片
     private Drawable statusDrawable;    //状态图片
@@ -27,6 +33,7 @@ public class SwitchButton extends CompoundButton {
     private BitmapDrawable sliderMaskBitmapDrawable;    //滑块遮罩图片
     private SwitchScroller switchScroller;
     private PorterDuffXfermode porterDuffXfermode;//遮罩类型
+    private RectF buttonRect;
 
     public SwitchButton(Context context) {
         this(context, null);
@@ -47,10 +54,12 @@ public class SwitchButton extends CompoundButton {
      * @param attrs 属性
      */
     private void init(AttributeSet attrs){
+        setGravity(Gravity.CENTER_VERTICAL);
         paint = new Paint();
         paint.setColor(Color.RED);
         porterDuffXfermode = new PorterDuffXfermode(PorterDuff.Mode.SRC_IN);
         switchScroller = new SwitchScroller(getContext(), new AccelerateDecelerateInterpolator());
+        buttonRect = new RectF();
 
         if(attrs != null && getContext() != null){
             TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.SwitchButton);
@@ -104,7 +113,32 @@ public class SwitchButton extends CompoundButton {
                 break;
         }
 
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+
+        if(measureWidth < getMeasuredWidth()){
+            measureWidth = getMeasuredWidth();
+        }
+
+        if(measureHeight < getMeasuredHeight()){
+            measureHeight = getMeasuredHeight();
+        }
+
         setMeasuredDimension(measureWidth, measureHeight);
+    }
+
+    @Override
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        super.onLayout(changed, left, top, right, bottom);
+        drawY = ((bottom - top) - frameDrawable.getIntrinsicHeight()) / 2;
+    }
+
+    private int getDrawX(){
+        Drawable[] drawables = getCompoundDrawables();
+        int drawableRightWidth = 0;
+        if(drawables != null && drawables.length > 2 && drawables[2] != null){
+            drawableRightWidth = drawables[2].getIntrinsicWidth() + getCompoundDrawablePadding();
+        }
+        return (getWidth() - frameDrawable.getIntrinsicWidth() - getPaddingRight() - drawableRightWidth);
     }
 
     @Override
@@ -113,7 +147,7 @@ public class SwitchButton extends CompoundButton {
 
         //保存图层并全体偏移，让paddingTop和paddingLeft生效
         canvas.save();
-        canvas.translate((getWidth() - frameDrawable.getIntrinsicWidth() - getPaddingRight()), getPaddingTop());
+        canvas.translate(getDrawX(), drawY);
 
         //绘制状态层
         if(statusDrawable != null && statusMaskBitmapDrawable != null){
@@ -158,15 +192,19 @@ public class SwitchButton extends CompoundButton {
         if(isEnabled()){
             switch(event.getAction()){
                 case MotionEvent.ACTION_DOWN :
+                    setPressed(true);   //激活按下状态
+                    buttonRect.set(getDrawX(), drawY, getDrawX() + frameDrawable.getIntrinsicWidth(), drawY + frameDrawable.getIntrinsicHeight());
+                    allowMode = buttonRect.contains(event.getX(), event.getY());   //判断按下的位置是否在按钮的范围之内
                     tempTotalSlideDistance = 0; //清空总滑动距离
                     tempTouchX = event.getX();  //记录X轴坐标
-                    setPressed(true);   //激活按下状态
                     break;
                 case MotionEvent.ACTION_MOVE :
-                    float newTouchX = event.getX();
-                    tempTotalSlideDistance += setSlideX(slideX + ((int) (newTouchX - tempTouchX)));    //更新X轴坐标并记录总滑动距离
-                    tempTouchX = newTouchX; //记录X轴坐标
-                    invalidate();
+                    if(allowMode){
+                        float newTouchX = event.getX();
+                        tempTotalSlideDistance += setSlideX(slideX + ((int) (newTouchX - tempTouchX)));    //更新X轴坐标并记录总滑动距离
+                        tempTouchX = newTouchX; //记录X轴坐标
+                        invalidate();
+                    }
                     break;
                 case MotionEvent.ACTION_UP :
                     setPressed(false);  //取消按下状态
@@ -181,11 +219,13 @@ public class SwitchButton extends CompoundButton {
                     }
                     break;
                 case MotionEvent.ACTION_CANCEL :
-                    System.out.println("MOVE");
+                    setPressed(false);  //取消按下状态
+                    System.out.println("CANCEL");
                     switchScroller.startScroll(isChecked()); //回滚
                     break;
                 case MotionEvent.ACTION_OUTSIDE :
-                    System.out.println("MOVE");
+                    setPressed(false);  //取消按下状态
+                    System.out.println("OUTSIDE");
                     switchScroller.startScroll(isChecked()); //回滚
                     break;
             }
