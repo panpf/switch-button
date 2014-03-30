@@ -42,6 +42,10 @@ public class SwitchButton extends CompoundButton {
         init(attrs);
     }
 
+    /**
+     * 初始化
+     * @param attrs 属性
+     */
     private void init(AttributeSet attrs){
         paint = new Paint();
         paint.setColor(Color.RED);
@@ -118,12 +122,17 @@ public class SwitchButton extends CompoundButton {
         //保存并创建一个新的透明层，如果不这样做的话，画出来的背景会是黑的
         canvas.saveLayer(0, 0, getWidth(), getHeight(), paint, Canvas.MATRIX_SAVE_FLAG | Canvas.CLIP_SAVE_FLAG | Canvas.HAS_ALPHA_LAYER_SAVE_FLAG | Canvas.FULL_COLOR_LAYER_SAVE_FLAG | Canvas.CLIP_TO_LAYER_SAVE_FLAG);
 
+        //全体向下偏移，让paddingTop生效
+        canvas.save();
+        canvas.translate((getWidth() - frameDrawable.getIntrinsicWidth() - getPaddingRight()), getPaddingTop());
+
         //绘制状态层
         if(statusDrawable != null && statusMaskBitmapDrawable != null){
             canvas.save();
             canvas.translate(slideX, 0);
             statusDrawable.draw(canvas);
             canvas.restore();
+
             paint.setXfermode(porterDuffXfermode);
             canvas.drawBitmap(statusMaskBitmapDrawable.getBitmap(), 0, 0, paint);
             paint.setXfermode(null);
@@ -140,10 +149,12 @@ public class SwitchButton extends CompoundButton {
             canvas.translate(slideX, 0);
             sliderDrawable.draw(canvas);
             canvas.restore();
+
             paint.setXfermode(porterDuffXfermode);
             canvas.drawBitmap(sliderMaskBitmapDrawable.getBitmap(), 0, 0, paint);
             paint.setXfermode(null);
         }
+        canvas.restore();
     }
 
     @Override
@@ -164,7 +175,6 @@ public class SwitchButton extends CompoundButton {
                     break;
                 case MotionEvent.ACTION_UP :
                     setPressed(false);  //取消按下状态
-                    System.out.println("总距离："+tempTotalSlideDistance);
                     if(Math.abs(tempTotalSlideDistance) > 0){//当滑动距离大于0才会被认为这是一次有效的滑动操作，否则就是单机操作
                         if(Math.abs(tempTotalSlideDistance) >= Math.abs(frameDrawable.getIntrinsicWidth() * minChangeDistanceScale)){//如果滑动距离大于等于最小切换距离就切换状态
                             setChecked(!isChecked());   //切换状态

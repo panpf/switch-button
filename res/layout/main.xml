@@ -116,6 +116,7 @@
             android:text="天气预报"/>
         <me.xiaopan.android.switchbutton.SwitchButton
             android:id="@+id/switch_main_5"
+            android:padding="8dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:frameDrawable="@drawable/button_sliding_frame"
@@ -124,4 +125,25 @@
             app:sliderDrawable="@drawable/selector_switch_slider"
             app:sliderMaskDrawable="@drawable/button_sliding_slider_mask"/>
     </LinearLayout>
+
+	<LinearLayout
+		style="@style/item"
+		android:id="@+id/layout_main_6"
+		android:gravity="center_vertical"
+		android:clickable="true"
+		android:background="@drawable/selector_preference_complete"
+		android:layout_marginTop="16dp">
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:textColor="@android:color/black"
+			android:text="天气预报"/>
+		<Switch
+			android:text="天气预报天气预报天气预报天气预报天气预报天气预报"
+			android:id="@+id/switch_main_6"
+			android:padding="8dp"
+			android:background="#8833b5e5"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"/>
+	</LinearLayout>
 </LinearLayout>
