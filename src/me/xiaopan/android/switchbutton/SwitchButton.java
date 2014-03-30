@@ -49,7 +49,7 @@ public class SwitchButton extends CompoundButton {
     private void init(AttributeSet attrs){
         paint = new Paint();
         paint.setColor(Color.RED);
-        porterDuffXfermode = new PorterDuffXfermode(PorterDuff.Mode.DST_IN);
+        porterDuffXfermode = new PorterDuffXfermode(PorterDuff.Mode.SRC_IN);
         switchScroller = new SwitchScroller(getContext(), new AccelerateDecelerateInterpolator());
 
         if(attrs != null && getContext() != null){
@@ -119,23 +119,22 @@ public class SwitchButton extends CompoundButton {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        //保存并创建一个新的透明层，如果不这样做的话，画出来的背景会是黑的
-        canvas.saveLayer(0, 0, getWidth(), getHeight(), paint, Canvas.MATRIX_SAVE_FLAG | Canvas.CLIP_SAVE_FLAG | Canvas.HAS_ALPHA_LAYER_SAVE_FLAG | Canvas.FULL_COLOR_LAYER_SAVE_FLAG | Canvas.CLIP_TO_LAYER_SAVE_FLAG);
-
-        //全体向下偏移，让paddingTop生效
+        //保存图层并全体偏移，让paddingTop和paddingLeft生效
         canvas.save();
         canvas.translate((getWidth() - frameDrawable.getIntrinsicWidth() - getPaddingRight()), getPaddingTop());
 
         //绘制状态层
         if(statusDrawable != null && statusMaskBitmapDrawable != null){
-            canvas.save();
-            canvas.translate(slideX, 0);
-            statusDrawable.draw(canvas);
-            canvas.restore();
-
-            paint.setXfermode(porterDuffXfermode);
+            //保存并创建一个新的透明层，如果不这样做的话，画出来的背景会是黑的
+            int src = canvas.saveLayer(0, 0, getWidth(), getHeight(), paint, Canvas.MATRIX_SAVE_FLAG | Canvas.CLIP_SAVE_FLAG | Canvas.HAS_ALPHA_LAYER_SAVE_FLAG | Canvas.FULL_COLOR_LAYER_SAVE_FLAG | Canvas.CLIP_TO_LAYER_SAVE_FLAG);
+            //绘制遮罩层
             canvas.drawBitmap(statusMaskBitmapDrawable.getBitmap(), 0, 0, paint);
+            //绘制状态图片按并应用遮罩效果
+            paint.setXfermode(porterDuffXfermode);
+            canvas.drawBitmap(((BitmapDrawable) statusDrawable.getCurrent()).getBitmap(), slideX, 0, paint);
             paint.setXfermode(null);
+            //融合图层
+            canvas.restoreToCount(src);
         }
 
         //绘制框架层
@@ -145,15 +144,19 @@ public class SwitchButton extends CompoundButton {
 
         //绘制滑块层
         if(sliderDrawable != null && sliderMaskBitmapDrawable != null){
-            canvas.save();
-            canvas.translate(slideX, 0);
-            sliderDrawable.draw(canvas);
-            canvas.restore();
-
-            paint.setXfermode(porterDuffXfermode);
+            //保存并创建一个新的透明层，如果不这样做的话，画出来的背景会是黑的
+            int src = canvas.saveLayer(0, 0, getWidth(), getHeight(), paint, Canvas.MATRIX_SAVE_FLAG | Canvas.CLIP_SAVE_FLAG | Canvas.HAS_ALPHA_LAYER_SAVE_FLAG | Canvas.FULL_COLOR_LAYER_SAVE_FLAG | Canvas.CLIP_TO_LAYER_SAVE_FLAG);
+            //绘制遮罩层
             canvas.drawBitmap(sliderMaskBitmapDrawable.getBitmap(), 0, 0, paint);
+            //绘制滑块图片按并应用遮罩效果
+            paint.setXfermode(porterDuffXfermode);
+            canvas.drawBitmap(((BitmapDrawable) sliderDrawable.getCurrent()).getBitmap(), slideX, 0, paint);
             paint.setXfermode(null);
+            //融合图层
+            canvas.restoreToCount(src);
         }
+
+        //融合图层
         canvas.restore();
     }
 
