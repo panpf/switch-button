@@ -63,7 +63,7 @@ selector_switch_slider.xml
 </resources>
 ```
 
-###3.下载**[SwitchButton.java](https://github.com/xiaopansky/Android-SwitchButton/raw/master/src/me.xiaopan.android.switchbutton.SwitchButton.java)**并放到任意源码目录下，注意放到你项目中要修改R文件的引用才能编译通过
+###3.下载**[SwitchButton.java](https://github.com/xiaopansky/Android-SwitchButton/raw/master/src/me/xiaopan/android/switchbutton/SwitchButton.java)**并放到任意源码目录下，注意放到你项目中要修改R文件的引用才能编译通过
 
 ###4.在布局中添加自定义属性并引用SwitchButton
 ```xml
