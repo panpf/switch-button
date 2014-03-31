@@ -2,7 +2,7 @@
 
 Android-SwitchButton是用在Android上的开关按钮，最低兼容Android2.2
 
-![sample](https://github.com/xiaopansky/Android-SwitchButton/raw/master/docs/sample.jpg)
+![sample](https://github.com/xiaopansky/Android-SwitchButton/raw/master/docs/sample.png)
 
 ##Features
 
@@ -15,10 +15,40 @@ Android-SwitchButton是用在Android上的开关按钮，最低兼容Android2.2
 >* 支持使用遮罩实现圆角按钮
 
 ##Usage
-### 使用自定义属性设置按钮图片
-####1. 下载**[SwitchButton.java](https://github.com/xiaopansky/Android-SwitchButton/raw/master/src/me.xiaopan.android.switchbutton.SwitchButton.java)**并放到任意源码目录下
+###1.图片准备
 
-####2. 下载属性文件**[attrs.xml](https://github.com/xiaopansky/Android-SwitchButton/raw/master/res/values/attrs.xml)**并放到values目录下。源码如下，也可复制粘贴到项目中
+![switch_frame.png](https://github.com/xiaopansky/Android-SwitchButton/raw/master/res/drawable-xhdpi/switch_frame.png) **[switch_frame.png](https://github.com/xiaopansky/Android-SwitchButton/raw/master/res/drawable-xhdpi/switch_frame.png)**
+
+![switch_state_normal.png](https://github.com/xiaopansky/Android-SwitchButton/raw/master/res/drawable-xhdpi/switch_state_normal.png) **[switch_state_normal.png](https://github.com/xiaopansky/Android-SwitchButton/raw/master/res/drawable-xhdpi/switch_state_normal.png)**
+
+![switch_state_disable.png](https://github.com/xiaopansky/Android-SwitchButton/raw/master/res/drawable-xhdpi/switch_state_disable.png) **[switch_state_disable.png](https://github.com/xiaopansky/Android-SwitchButton/raw/master/res/drawable-xhdpi/switch_state_disable.png)**
+
+![switch_state_mask.png](https://github.com/xiaopansky/Android-SwitchButton/raw/master/res/drawable-xhdpi/switch_state_mask.png) **[switch_state_mask.png](https://github.com/xiaopansky/Android-SwitchButton/raw/master/res/drawable-xhdpi/switch_state_mask.png)**
+
+![switch_slider_normal.png](https://github.com/xiaopansky/Android-SwitchButton/raw/master/res/drawable-xhdpi/switch_slider_normal.png) **[switch_slider_normal.png](https://github.com/xiaopansky/Android-SwitchButton/raw/master/res/drawable-xhdpi/switch_slider_normal.png)**
+
+![switch_slider_disable.png](https://github.com/xiaopansky/Android-SwitchButton/raw/master/res/drawable-xhdpi/switch_slider_disable.png) **[switch_slider_disable.png](https://github.com/xiaopansky/Android-SwitchButton/raw/master/res/drawable-xhdpi/switch_slider_disable.png)**
+
+![switch_slider_mask.png](https://github.com/xiaopansky/Android-SwitchButton/raw/master/res/drawable-xhdpi/switch_slider_mask.png) **[switch_slider_mask.png](https://github.com/xiaopansky/Android-SwitchButton/raw/master/res/drawable-xhdpi/switch_slider_mask.png)**
+
+selector_switch_state.xml
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item android:state_enabled="false" android:drawable="@drawable/switch_slider_disable"/>
+    <item android:drawable="@drawable/switch_slider_normal"/>
+</selector>
+```
+
+selector_switch_slider.xml
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item android:state_enabled="false" android:drawable="@drawable/switch_state_disable"/>
+    <item android:drawable="@drawable/switch_state_normal"/>
+</selector>
+```
+###2.下载属性文件**[attrs.xml](https://github.com/xiaopansky/Android-SwitchButton/raw/master/res/values/attrs.xml)**并放到values目录下。源码如下，也可复制粘贴到项目中
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
@@ -33,7 +63,9 @@ Android-SwitchButton是用在Android上的开关按钮，最低兼容Android2.2
 </resources>
 ```
 
-####3. 在布局中添加自定义属性并引用SwitchButton
+###3.下载**[SwitchButton.java](https://github.com/xiaopansky/Android-SwitchButton/raw/master/src/me.xiaopan.android.switchbutton.SwitchButton.java)**并放到任意源码目录下，注意放到你项目中要修改R文件的引用才能编译通过
+
+###4.在布局中添加自定义属性并引用SwitchButton
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <me.xiaopan.android.switchbutton.SwitchButton
@@ -54,30 +86,20 @@ Android-SwitchButton是用在Android上的开关按钮，最低兼容Android2.2
     app:sliderMaskDrawable="@drawable/switch_slider_mask"/>
 ```
 
-### 使用相关方法设置按钮图片
+###5.属性解释
+>* withTextInterval：标题文字和按钮之间的距离
+>* frameDrawable：框架图片，定义整个按钮的大小以及显示区域
+>* stateDrawable：状态图片，显示开启或关闭
+>* stateMaskDrawable：状态图片遮罩层
+>* sliderDrawable：滑块图片
+>* sliderMaskDrawable：滑块图片遮罩层
 
-##Downloads
-**[android-switch-button-1.0.0.jar](https://github.com/xiaopansky/Android-SwitchButton/raw/master/releases/android-switch-button-1.0.0.jar)**
-
-**[android-switch-button-1.0.0-with-src.jar](https://github.com/xiaopansky/Android-SwitchButton/raw/master/releases/android-switch-button-1.0.0-with-src.jar)**
-
-**[attrs.xml](https://github.com/xiaopansky/Android-SwitchButton/raw/master/res/values/attrs.xml)**
-
-**[SwitchButton.java](https://github.com/xiaopansky/Android-SwitchButton/raw/master/src/me/xiaopan/android/switchbutton/SwitchButton.java)**
-
-![switch_frame.png](https://github.com/xiaopansky/Android-SwitchButton/raw/master/res/drawable-xhdpi/switch_frame.png) **[switch_frame.png](https://github.com/xiaopansky/Android-SwitchButton/raw/master/res/drawable-xhdpi/switch_frame.png)**
-
-![switch_state_normal.png](https://github.com/xiaopansky/Android-SwitchButton/raw/master/res/drawable-xhdpi/switch_state_normal.png) **[switch_state_normal.png](https://github.com/xiaopansky/Android-SwitchButton/raw/master/res/drawable-xhdpi/switch_state_normal.png)**
-
-![switch_state_disable.png](https://github.com/xiaopansky/Android-SwitchButton/raw/master/res/drawable-xhdpi/switch_state_disable.png) **[switch_state_disable.png](https://github.com/xiaopansky/Android-SwitchButton/raw/master/res/drawable-xhdpi/switch_state_disable.png)**
-
-![switch_state_mask.png](https://github.com/xiaopansky/Android-SwitchButton/raw/master/res/drawable-xhdpi/switch_state_mask.png) **[switch_state_mask.png](https://github.com/xiaopansky/Android-SwitchButton/raw/master/res/drawable-xhdpi/switch_state_mask.png)**
-
-![switch_slider_normal.png](https://github.com/xiaopansky/Android-SwitchButton/raw/master/res/drawable-xhdpi/switch_slider_normal.png) **[switch_slider_normal.png](https://github.com/xiaopansky/Android-SwitchButton/raw/master/res/drawable-xhdpi/switch_slider_normal.png)**
-
-![switch_slider_disable.png](https://github.com/xiaopansky/Android-SwitchButton/raw/master/res/drawable-xhdpi/switch_slider_disable.png) **[switch_slider_disable.png](https://github.com/xiaopansky/Android-SwitchButton/raw/master/res/drawable-xhdpi/switch_slider_disable.png)**
-
-![switch_slider_mask.png](https://github.com/xiaopansky/Android-SwitchButton/raw/master/res/drawable-xhdpi/switch_slider_mask.png) **[switch_slider_mask.png](https://github.com/xiaopansky/Android-SwitchButton/raw/master/res/drawable-xhdpi/switch_slider_mask.png)**
+###6.其它方法：
+>* setDrawables(Drawable frameBitmap, Drawable stateDrawable, Drawable stateMaskDrawable, Drawable sliderDrawable, Drawable sliderMaskDrawable)：设置图片
+>* setDrawableResIds(int frameDrawableResId, int stateDrawableResId, int stateMaskDrawableResId, int sliderDrawableResId, int sliderMaskDrawableResId)：设置图片ID
+>* setWithTextInterval(int withTextInterval)：设置标题和按钮的间距
+>* setDuration(int duration)：设置动画持续时间
+>* setMinChangeDistanceScale(float minChangeDistanceScale)：设置滑动有效距离比例，例如按钮宽度为100，比例为0.3，那么只有当滑动距离大于等于(100*0.3)才会切换状态，否则就回滚
 
 ##License
 ```java

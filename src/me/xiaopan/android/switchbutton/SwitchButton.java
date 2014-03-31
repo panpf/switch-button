@@ -30,7 +30,7 @@ public class SwitchButton extends CompoundButton {
     private int duration = 200; //动画持续时间
     private int touchMode; //触摸模式，用来在处理滑动事件的时候区分操作
     private int touchSlop;
-    private int withTextInterval;   //文字和按钮之间的间距
+    private int withTextInterval = 16;   //文字和按钮之间的间距
     private float touchX;   //记录上次触摸坐标，用于计算滑动距离
     private float minChangeDistanceScale = 0.2f;   //有效距离比例，例如按钮宽度为100，比例为0.3，那么只有当滑动距离大于等于(100*0.3)才会切换状态，否则就回滚
     private Paint paint;    //画笔，用来绘制遮罩效果
@@ -406,7 +406,7 @@ public class SwitchButton extends CompoundButton {
 
     /**
      * 设置动画持续时间
-     * @param duration
+     * @param duration 动画持续时间
      */
     public void setDuration(int duration) {
         this.duration = duration;
