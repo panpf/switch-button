@@ -88,7 +88,7 @@ selector_switch_slider.xml
 
 ###5.属性解释
 >* withTextInterval：标题文字和按钮之间的距离
->* frameDrawable：框架图片，定义整个按钮的大小以及显示区域
+>* frameDrawable：框架图片，定义按钮的大小以及显示区域
 >* stateDrawable：状态图片，显示开启或关闭
 >* stateMaskDrawable：状态图片遮罩层
 >* sliderDrawable：滑块图片
@@ -97,9 +97,9 @@ selector_switch_slider.xml
 ###6.其它方法：
 >* setDrawables(Drawable frameBitmap, Drawable stateDrawable, Drawable stateMaskDrawable, Drawable sliderDrawable, Drawable sliderMaskDrawable)：设置图片
 >* setDrawableResIds(int frameDrawableResId, int stateDrawableResId, int stateMaskDrawableResId, int sliderDrawableResId, int sliderMaskDrawableResId)：设置图片ID
->* setWithTextInterval(int withTextInterval)：设置标题和按钮的间距
->* setDuration(int duration)：设置动画持续时间
->* setMinChangeDistanceScale(float minChangeDistanceScale)：设置滑动有效距离比例，例如按钮宽度为100，比例为0.3，那么只有当滑动距离大于等于(100*0.3)才会切换状态，否则就回滚
+>* setWithTextInterval(int withTextInterval)：设置标题和按钮的间距，默认为16
+>* setDuration(int duration)：设置动画持续时间，单位毫秒，默认为200
+>* setMinChangeDistanceScale(float minChangeDistanceScale)：设置滑动有效距离比例，默认为0.2。例如按钮宽度为100，比例为0.2，那么只有当滑动距离大于等于(100*0.2)才会切换状态，否则就回滚
 
 ##License
 ```java
