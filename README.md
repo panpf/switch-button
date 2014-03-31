@@ -67,6 +67,18 @@ Android-SwitchButton是用在Android上的开关按钮，最低兼容Android2.2
 
 ![switch_frame.png](https://github.com/xiaopansky/Android-SwitchButton/raw/master/res/drawable-xhdpi/switch_frame.png) **[switch_frame.png](https://github.com/xiaopansky/Android-SwitchButton/raw/master/res/drawable-xhdpi/switch_frame.png)**
 
+![switch_state_normal.png](https://github.com/xiaopansky/Android-SwitchButton/raw/master/res/drawable-xhdpi/switch_state_normal.png) **[switch_state_normal.png](https://github.com/xiaopansky/Android-SwitchButton/raw/master/res/drawable-xhdpi/switch_state_normal.png)**
+
+![switch_state_disable.png](https://github.com/xiaopansky/Android-SwitchButton/raw/master/res/drawable-xhdpi/switch_state_disable.png) **[switch_state_disable.png](https://github.com/xiaopansky/Android-SwitchButton/raw/master/res/drawable-xhdpi/switch_state_disable.png)**
+
+![switch_state_mask.png](https://github.com/xiaopansky/Android-SwitchButton/raw/master/res/drawable-xhdpi/switch_state_mask.png) **[switch_state_mask.png](https://github.com/xiaopansky/Android-SwitchButton/raw/master/res/drawable-xhdpi/switch_state_mask.png)**
+
+![switch_slider_normal.png](https://github.com/xiaopansky/Android-SwitchButton/raw/master/res/drawable-xhdpi/switch_slider_normal.png) **[switch_slider_normal.png](https://github.com/xiaopansky/Android-SwitchButton/raw/master/res/drawable-xhdpi/switch_slider_normal.png)**
+
+![switch_slider_disable.png](https://github.com/xiaopansky/Android-SwitchButton/raw/master/res/drawable-xhdpi/switch_slider_disable.png) **[switch_slider_disable.png](https://github.com/xiaopansky/Android-SwitchButton/raw/master/res/drawable-xhdpi/switch_slider_disable.png)**
+
+![switch_slider_mask.png](https://github.com/xiaopansky/Android-SwitchButton/raw/master/res/drawable-xhdpi/switch_slider_mask.png) **[switch_slider_mask.png](https://github.com/xiaopansky/Android-SwitchButton/raw/master/res/drawable-xhdpi/switch_slider_mask.png)**
+
 ##License
 ```java
 /*
