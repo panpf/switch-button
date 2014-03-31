@@ -65,7 +65,7 @@ Android-SwitchButton是用在Android上的开关按钮，最低兼容Android2.2
 
 **[SwitchButton.java](https://github.com/xiaopansky/Android-SwitchButton/raw/master/src/me/xiaopan/android/switchbutton/SwitchButton.java)**
 
-![switch_frame.png](https://github.com/xiaopansky/Android-SwitchButton/raw/master/res/drawble-xhdpi/switch_frame.png) **[switch_frame.png](https://github.com/xiaopansky/Android-SwitchButton/raw/master/res/drawble-xhdpi/switch_frame.png)**
+![switch_frame.png](https://github.com/xiaopansky/Android-SwitchButton/raw/master/res/drawable-xhdpi/switch_frame.png) **[switch_frame.png](https://github.com/xiaopansky/Android-SwitchButton/raw/master/res/drawable-xhdpi/switch_frame.png)**
 
 ##License
 ```java
