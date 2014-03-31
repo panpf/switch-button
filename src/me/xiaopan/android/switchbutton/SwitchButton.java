@@ -9,9 +9,7 @@ import android.graphics.drawable.DrawableContainer;
 import android.os.Build;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.view.Gravity;
-import android.view.MotionEvent;
-import android.view.ViewConfiguration;
+import android.view.*;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.CompoundButton;
 import android.widget.Scroller;
@@ -44,7 +42,6 @@ public class SwitchButton extends CompoundButton {
     private Drawable sliderMaskDrawable;    //滑块遮罩图片
     private SwitchScroller switchScroller;  //切换滚动器，用于实现平滑滚动效果
     private PorterDuffXfermode porterDuffXfermode;//遮罩类型
-    private OnClickListener onClickListener;
 
     public SwitchButton(Context context) {
         this(context, null);
@@ -90,7 +87,7 @@ public class SwitchButton extends CompoundButton {
         ViewConfiguration config = ViewConfiguration.get(getContext());
         touchSlop = config.getScaledTouchSlop();
         setChecked(isChecked());
-        setClickable(false);
+        setClickable(true); //设置允许点击，当用户点击在按钮其它区域的时候就会切换状态
     }
 
     @Override
@@ -219,17 +216,14 @@ public class SwitchButton extends CompoundButton {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        switch(event.getAction()){
+        switch(event.getActionMasked()){
             case MotionEvent.ACTION_DOWN : {
                 // 如果按钮当前可用并且按下位置正好在按钮之内
-                if(isEnabled() ){
-                    if(buttonRectF.contains(event.getX(), event.getY())){
-                        touchMode = TOUCH_MODE_DOWN;
-                        tempTotalSlideDistance = 0; // 清空总滑动距离
-                        touchX = event.getX();  // 记录X轴坐标
-                    }else{
-                        setPressed(true);
-                    }
+                if(isEnabled() && buttonRectF.contains(event.getX(), event.getY())){
+                    touchMode = TOUCH_MODE_DOWN;
+                    tempTotalSlideDistance = 0; // 清空总滑动距离
+                    touchX = event.getX();  // 记录X轴坐标
+                    setClickable(false);    // 当用户触摸在按钮位置的时候禁用点击效果，这样做的目的是为了不让背景有按下效果
                 }
                 break;
             }
@@ -243,11 +237,13 @@ public class SwitchButton extends CompoundButton {
                         final float x = event.getX();
                         if (Math.abs(x - touchX) > touchSlop) {
                             touchMode = TOUCH_MODE_DRAGGING;
-                            // 禁值拦截触摸事件
+                            // 禁值父View拦截触摸事件
                             // 如果不加这段代码的话，当被ScrollView包括的时候，你会发现，当你在此按钮上按下，
                             // 紧接着滑动的时候ScrollView会跟着滑动，然后按钮的事件就丢失了，这会造成很难完成滑动操作
-                            // 这样一来用户会抓狂的
-                            getParent().requestDisallowInterceptTouchEvent(true);
+                            // 这样一来用户会抓狂的，加上这句话呢ScrollView就不会滚动了
+                            if(getParent() != null){
+                                getParent().requestDisallowInterceptTouchEvent(true);
+                            }
                             touchX = x;
                             return true;
                         }
@@ -265,31 +261,27 @@ public class SwitchButton extends CompoundButton {
             }
 
             case MotionEvent.ACTION_UP :{
-                setPressed(false);
-                //如果这是一次有效的滑动操作，否则就是单击操作
-                if(touchMode == TOUCH_MODE_DRAGGING){
+                setClickable(true);
+
+                //结尾滑动操作
+                if(touchMode == TOUCH_MODE_DRAGGING){// 这是滑动操作
                     touchMode = TOUCH_MODE_IDLE;
-                    //如果滑动距离大于等于最小切换距离就切换状态，否则滑动无效，回滚
+                    // 如果滑动距离大于等于最小切换距离就切换状态，否则回滚
                     if(Math.abs(tempTotalSlideDistance) >= Math.abs(frameDrawable.getIntrinsicWidth() * minChangeDistanceScale)){
-                        setChecked(!isChecked());   //切换状态
+                        toggle();   //切换状态
                     }else{
                         switchScroller.startScroll(isChecked());
                     }
-                }else if(touchMode == TOUCH_MODE_DOWN){
+                }else if(touchMode == TOUCH_MODE_DOWN){ // 这是按在按钮上的单击操作
                     touchMode = TOUCH_MODE_IDLE;
-                    setChecked(!isChecked());   //单击切换状态
-                }else{
-                    touchMode = TOUCH_MODE_IDLE;
-                    if(onClickListener != null){
-                        onClickListener.onClick(this);
-                    }
+                    toggle();
                 }
                 break;
             }
 
             case MotionEvent.ACTION_CANCEL :
             case MotionEvent.ACTION_OUTSIDE : {
-                setPressed(false);
+                setClickable(true);
                 if (touchMode == TOUCH_MODE_DRAGGING) {
                     touchMode = TOUCH_MODE_IDLE;
                     switchScroller.startScroll(isChecked()); //回滚
@@ -301,13 +293,7 @@ public class SwitchButton extends CompoundButton {
         }
 
         super.onTouchEvent(event);
-        return isEnabled()?true:false;
-    }
-
-    @Override
-    public void setOnClickListener(OnClickListener l) {
-        onClickListener = l;
-        setClickable(false);
+        return isEnabled();
     }
 
     @Override

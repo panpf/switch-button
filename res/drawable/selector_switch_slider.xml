@@ -6,9 +6,5 @@
         android:drawable="@drawable/switch_slider_disable"/>
 
     <item
-        android:state_pressed="true"
-        android:drawable="@drawable/switch_slider_pressed"/>
-
-    <item
         android:drawable="@drawable/switch_slider_normal"/>
 </selector>
