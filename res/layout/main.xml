@@ -22,8 +22,7 @@
             app:frameDrawable="@drawable/switch_frame"
             app:stateDrawable="@drawable/selector_switch_state"
             app:stateMaskDrawable="@drawable/switch_state_mask"
-            app:sliderDrawable="@drawable/selector_switch_slider"
-            app:sliderMaskDrawable="@drawable/switch_slider_mask"/>
+            app:sliderDrawable="@drawable/selector_switch_slider"/>
 
         <me.xiaopan.android.switchbutton.SwitchButton
 	        style="@style/item"
@@ -35,8 +34,7 @@
             app:frameDrawable="@drawable/switch_frame"
             app:stateDrawable="@drawable/selector_switch_state"
             app:stateMaskDrawable="@drawable/switch_state_mask"
-            app:sliderDrawable="@drawable/selector_switch_slider"
-            app:sliderMaskDrawable="@drawable/switch_slider_mask"/>
+            app:sliderDrawable="@drawable/selector_switch_slider"/>
 
         <me.xiaopan.android.switchbutton.SwitchButton
             style="@style/item"
@@ -47,8 +45,7 @@
             app:frameDrawable="@drawable/switch_frame"
             app:stateDrawable="@drawable/selector_switch_state"
             app:stateMaskDrawable="@drawable/switch_state_mask"
-            app:sliderDrawable="@drawable/selector_switch_slider"
-            app:sliderMaskDrawable="@drawable/switch_slider_mask"/>
+            app:sliderDrawable="@drawable/selector_switch_slider"/>
 
         <me.xiaopan.android.switchbutton.SwitchButton
             style="@style/item"
@@ -59,8 +56,7 @@
             app:frameDrawable="@drawable/switch_frame"
             app:stateDrawable="@drawable/selector_switch_state"
             app:stateMaskDrawable="@drawable/switch_state_mask"
-            app:sliderDrawable="@drawable/selector_switch_slider"
-            app:sliderMaskDrawable="@drawable/switch_slider_mask"/>
+            app:sliderDrawable="@drawable/selector_switch_slider"/>
 
         <me.xiaopan.android.switchbutton.SwitchButton
 	        style="@style/item"
@@ -71,8 +67,7 @@
             app:frameDrawable="@drawable/switch_frame"
             app:stateDrawable="@drawable/selector_switch_state"
             app:stateMaskDrawable="@drawable/switch_state_mask"
-            app:sliderDrawable="@drawable/selector_switch_slider"
-            app:sliderMaskDrawable="@drawable/switch_slider_mask"/>
+            app:sliderDrawable="@drawable/selector_switch_slider"/>
 
 		<me.xiaopan.android.switchbutton.SwitchButton
 			style="@style/item"
@@ -83,8 +78,7 @@
 			app:frameDrawable="@drawable/switch_frame"
 			app:stateDrawable="@drawable/selector_switch_state"
 			app:stateMaskDrawable="@drawable/switch_state_mask"
-			app:sliderDrawable="@drawable/selector_switch_slider"
-			app:sliderMaskDrawable="@drawable/switch_slider_mask"/>
+			app:sliderDrawable="@drawable/selector_switch_slider"/>
 
         <me.xiaopan.android.switchbutton.SwitchButton
             style="@style/item"
@@ -96,8 +90,7 @@
             app:frameDrawable="@drawable/switch_frame"
             app:stateDrawable="@drawable/selector_switch_state"
             app:stateMaskDrawable="@drawable/switch_state_mask"
-            app:sliderDrawable="@drawable/selector_switch_slider"
-            app:sliderMaskDrawable="@drawable/switch_slider_mask"/>
+            app:sliderDrawable="@drawable/selector_switch_slider"/>
 
         <me.xiaopan.android.switchbutton.SwitchButton
             style="@style/item"
@@ -108,8 +101,7 @@
             app:frameDrawable="@drawable/switch_frame"
             app:stateDrawable="@drawable/selector_switch_state"
             app:stateMaskDrawable="@drawable/switch_state_mask"
-            app:sliderDrawable="@drawable/selector_switch_slider"
-            app:sliderMaskDrawable="@drawable/switch_slider_mask"/>
+            app:sliderDrawable="@drawable/selector_switch_slider"/>
 
         <!--<me.xiaopan.android.switchbutton.SwitchButton
             style="@style/item"

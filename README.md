@@ -29,8 +29,6 @@ SwitchButton是用在Android上的开关按钮，最低兼容Android2.2
 
 ![switch_slider_disable.png](https://github.com/xiaopansky/SwitchButton/raw/master/res/drawable-xhdpi/switch_slider_disable.png) **[switch_slider_disable.png](https://github.com/xiaopansky/SwitchButton/raw/master/res/drawable-xhdpi/switch_slider_disable.png)**
 
-![switch_slider_mask.png](https://github.com/xiaopansky/SwitchButton/raw/master/res/drawable-xhdpi/switch_slider_mask.png) **[switch_slider_mask.png](https://github.com/xiaopansky/SwitchButton/raw/master/res/drawable-xhdpi/switch_slider_mask.png)**
-
 selector_switch_state.xml
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
@@ -57,7 +55,6 @@ selector_switch_slider.xml
         <attr name="stateDrawable" format="reference|color"/>
         <attr name="stateMaskDrawable" format="reference|color"/>
         <attr name="sliderDrawable" format="reference|color"/>
-        <attr name="sliderMaskDrawable" format="reference|color"/>
 	    <attr name="withTextInterval" format="dimension"/>
     </declare-styleable>
 </resources>
@@ -82,8 +79,7 @@ selector_switch_slider.xml
     app:frameDrawable="@drawable/switch_frame"
     app:stateDrawable="@drawable/selector_switch_state"
     app:stateMaskDrawable="@drawable/switch_state_mask"
-    app:sliderDrawable="@drawable/selector_switch_slider"
-    app:sliderMaskDrawable="@drawable/switch_slider_mask"/>
+    app:sliderDrawable="@drawable/selector_switch_slider"/>
 ```
 
 ###5.属性解释
@@ -92,11 +88,10 @@ selector_switch_slider.xml
 >* stateDrawable：状态图片，显示开启或关闭
 >* stateMaskDrawable：状态图片遮罩层
 >* sliderDrawable：滑块图片
->* sliderMaskDrawable：滑块图片遮罩层
 
 ###6.其它方法：
->* setDrawables(Drawable frameBitmap, Drawable stateDrawable, Drawable stateMaskDrawable, Drawable sliderDrawable, Drawable sliderMaskDrawable)：设置图片
->* setDrawableResIds(int frameDrawableResId, int stateDrawableResId, int stateMaskDrawableResId, int sliderDrawableResId, int sliderMaskDrawableResId)：设置图片ID
+>* setDrawables(Drawable frameBitmap, Drawable stateDrawable, Drawable stateMaskDrawable, Drawable sliderDrawable)：设置图片
+>* setDrawableResIds(int frameDrawableResId, int stateDrawableResId, int stateMaskDrawableResId, int sliderDrawableResId)：设置图片ID
 >* setWithTextInterval(int withTextInterval)：设置标题和按钮的间距，默认为16
 >* setDuration(int duration)：设置动画持续时间，单位毫秒，默认为200
 >* setMinChangeDistanceScale(float minChangeDistanceScale)：设置滑动有效距离比例，默认为0.2。例如按钮宽度为100，比例为0.2，那么只有当滑动距离大于等于(100*0.2)才会切换状态，否则就回滚
@@ -127,8 +122,7 @@ selector_switch_slider.xml
             app:frameDrawable="@drawable/switch_frame"
             app:stateDrawable="@drawable/selector_switch_state"
             app:stateMaskDrawable="@drawable/switch_state_mask"
-            app:sliderDrawable="@drawable/selector_switch_slider"
-            app:sliderMaskDrawable="@drawable/switch_slider_mask"/>
+            app:sliderDrawable="@drawable/selector_switch_slider"/>
 
         <me.xiaopan.android.switchbutton.SwitchButton
 	        style="@style/item"
@@ -140,8 +134,7 @@ selector_switch_slider.xml
             app:frameDrawable="@drawable/switch_frame"
             app:stateDrawable="@drawable/selector_switch_state"
             app:stateMaskDrawable="@drawable/switch_state_mask"
-            app:sliderDrawable="@drawable/selector_switch_slider"
-            app:sliderMaskDrawable="@drawable/switch_slider_mask"/>
+            app:sliderDrawable="@drawable/selector_switch_slider"/>
 
         <me.xiaopan.android.switchbutton.SwitchButton
             style="@style/item"
@@ -152,8 +145,7 @@ selector_switch_slider.xml
             app:frameDrawable="@drawable/switch_frame"
             app:stateDrawable="@drawable/selector_switch_state"
             app:stateMaskDrawable="@drawable/switch_state_mask"
-            app:sliderDrawable="@drawable/selector_switch_slider"
-            app:sliderMaskDrawable="@drawable/switch_slider_mask"/>
+            app:sliderDrawable="@drawable/selector_switch_slider"/>
 
         <me.xiaopan.android.switchbutton.SwitchButton
             style="@style/item"
@@ -164,8 +156,7 @@ selector_switch_slider.xml
             app:frameDrawable="@drawable/switch_frame"
             app:stateDrawable="@drawable/selector_switch_state"
             app:stateMaskDrawable="@drawable/switch_state_mask"
-            app:sliderDrawable="@drawable/selector_switch_slider"
-            app:sliderMaskDrawable="@drawable/switch_slider_mask"/>
+            app:sliderDrawable="@drawable/selector_switch_slider"/>
 
         <me.xiaopan.android.switchbutton.SwitchButton
 	        style="@style/item"
@@ -176,8 +167,7 @@ selector_switch_slider.xml
             app:frameDrawable="@drawable/switch_frame"
             app:stateDrawable="@drawable/selector_switch_state"
             app:stateMaskDrawable="@drawable/switch_state_mask"
-            app:sliderDrawable="@drawable/selector_switch_slider"
-            app:sliderMaskDrawable="@drawable/switch_slider_mask"/>
+            app:sliderDrawable="@drawable/selector_switch_slider"/>
 
 		<me.xiaopan.android.switchbutton.SwitchButton
 			style="@style/item"
@@ -188,8 +178,7 @@ selector_switch_slider.xml
 			app:frameDrawable="@drawable/switch_frame"
 			app:stateDrawable="@drawable/selector_switch_state"
 			app:stateMaskDrawable="@drawable/switch_state_mask"
-			app:sliderDrawable="@drawable/selector_switch_slider"
-			app:sliderMaskDrawable="@drawable/switch_slider_mask"/>
+			app:sliderDrawable="@drawable/selector_switch_slider"/>
 
         <me.xiaopan.android.switchbutton.SwitchButton
             style="@style/item"
@@ -201,8 +190,7 @@ selector_switch_slider.xml
             app:frameDrawable="@drawable/switch_frame"
             app:stateDrawable="@drawable/selector_switch_state"
             app:stateMaskDrawable="@drawable/switch_state_mask"
-            app:sliderDrawable="@drawable/selector_switch_slider"
-            app:sliderMaskDrawable="@drawable/switch_slider_mask"/>
+            app:sliderDrawable="@drawable/selector_switch_slider"/>
 
         <me.xiaopan.android.switchbutton.SwitchButton
             style="@style/item"
@@ -213,8 +201,7 @@ selector_switch_slider.xml
             app:frameDrawable="@drawable/switch_frame"
             app:stateDrawable="@drawable/selector_switch_state"
             app:stateMaskDrawable="@drawable/switch_state_mask"
-            app:sliderDrawable="@drawable/selector_switch_slider"
-            app:sliderMaskDrawable="@drawable/switch_slider_mask"/>
+            app:sliderDrawable="@drawable/selector_switch_slider"/>
 	</LinearLayout>
 </ScrollView>
 

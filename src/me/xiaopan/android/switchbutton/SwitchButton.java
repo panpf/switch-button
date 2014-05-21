@@ -48,7 +48,6 @@ public class SwitchButton extends CompoundButton {
     private Drawable stateDrawable;    //状态图片
     private Drawable stateMaskDrawable;    //状态遮罩图片
     private Drawable sliderDrawable;    //滑块图片
-    private Drawable sliderMaskDrawable;    //滑块遮罩图片
     private SwitchScroller switchScroller;  //切换滚动器，用于实现平滑滚动效果
     private PorterDuffXfermode porterDuffXfermode;//遮罩类型
 
@@ -86,8 +85,7 @@ public class SwitchButton extends CompoundButton {
                     typedArray.getDrawable(R.styleable.SwitchButton_frameDrawable),
                     typedArray.getDrawable(R.styleable.SwitchButton_stateDrawable),
                     typedArray.getDrawable(R.styleable.SwitchButton_stateMaskDrawable),
-                    typedArray.getDrawable(R.styleable.SwitchButton_sliderDrawable),
-                    typedArray.getDrawable(R.styleable.SwitchButton_sliderMaskDrawable)
+                    typedArray.getDrawable(R.styleable.SwitchButton_sliderDrawable)
                 );
                 typedArray.recycle();
             }
@@ -203,19 +201,10 @@ public class SwitchButton extends CompoundButton {
         }
 
         // 绘制滑块层
-        if(sliderDrawable != null && sliderMaskDrawable != null){
+        if(sliderDrawable != null){
             Bitmap sliderBitmap = getBitmapFromDrawable(sliderDrawable);
-            if(sliderMaskDrawable != null && sliderBitmap != null && !sliderBitmap.isRecycled()){
-                // 保存并创建一个新的透明层，如果不这样做的话，画出来的背景会是黑的
-                int src = canvas.saveLayer(0, 0, getWidth(), getHeight(), paint, Canvas.MATRIX_SAVE_FLAG | Canvas.CLIP_SAVE_FLAG | Canvas.HAS_ALPHA_LAYER_SAVE_FLAG | Canvas.FULL_COLOR_LAYER_SAVE_FLAG | Canvas.CLIP_TO_LAYER_SAVE_FLAG);
-                // 绘制遮罩层
-                sliderMaskDrawable.draw(canvas);
-                // 绘制滑块图片按并应用遮罩效果
-                paint.setXfermode(porterDuffXfermode);
+            if(sliderBitmap != null && !sliderBitmap.isRecycled()){
                 canvas.drawBitmap(sliderBitmap, tempSlideX, 0, paint);
-                paint.setXfermode(null);
-                // 融合图层
-                canvas.restoreToCount(src);
             }
         }
 
@@ -313,13 +302,12 @@ public class SwitchButton extends CompoundButton {
         if(stateDrawable != null) stateDrawable.setState(drawableState); //更新状态图片的状态
         if(stateMaskDrawable != null) stateMaskDrawable.setState(drawableState); //更新状态遮罩图片的状态
         if(sliderDrawable != null) sliderDrawable.setState(drawableState); //更新滑块图片的状态
-        if(sliderMaskDrawable != null) sliderMaskDrawable.setState(drawableState); //更新滑块遮罩图片的状态
         invalidate();
     }
 
     @Override
     protected boolean verifyDrawable(Drawable who) {
-        return super.verifyDrawable(who) || who == frameDrawable || who == stateDrawable || who == stateMaskDrawable || who == sliderDrawable || who == sliderMaskDrawable;
+        return super.verifyDrawable(who) || who == frameDrawable || who == stateDrawable || who == stateMaskDrawable || who == sliderDrawable;
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
@@ -331,7 +319,6 @@ public class SwitchButton extends CompoundButton {
             if(stateDrawable != null) stateDrawable.jumpToCurrentState();
             if(stateMaskDrawable != null) stateMaskDrawable.jumpToCurrentState();
             if(sliderDrawable != null) sliderDrawable.jumpToCurrentState();
-            if(sliderMaskDrawable != null) sliderMaskDrawable.jumpToCurrentState();
         }
     }
 
@@ -364,10 +351,9 @@ public class SwitchButton extends CompoundButton {
      * @param stateDrawable 状态图片
      * @param stateMaskDrawable 状态遮罩图片
      * @param sliderDrawable 滑块图片
-     * @param sliderMaskDrawable 滑块遮罩图片
      */
-    public void setDrawables(Drawable frameBitmap, Drawable stateDrawable, Drawable stateMaskDrawable, Drawable sliderDrawable, Drawable sliderMaskDrawable){
-        if(frameBitmap == null || stateDrawable == null || stateMaskDrawable == null || sliderDrawable == null || sliderMaskDrawable == null){
+    public void setDrawables(Drawable frameBitmap, Drawable stateDrawable, Drawable stateMaskDrawable, Drawable sliderDrawable){
+        if(frameBitmap == null || stateDrawable == null || stateMaskDrawable == null || sliderDrawable == null){
             throw new IllegalArgumentException("ALL NULL");
         }
 
@@ -375,7 +361,6 @@ public class SwitchButton extends CompoundButton {
         this.stateDrawable = stateDrawable;
         this.stateMaskDrawable = stateMaskDrawable;
         this.sliderDrawable = sliderDrawable;
-        this.sliderMaskDrawable = sliderMaskDrawable;
 
         this.frameDrawable.setBounds(0, 0, this.frameDrawable.getIntrinsicWidth(), this.frameDrawable.getIntrinsicHeight());
         this.frameDrawable.setCallback(this);
@@ -385,8 +370,6 @@ public class SwitchButton extends CompoundButton {
         this.stateMaskDrawable.setCallback(this);
         this.sliderDrawable.setBounds(0, 0, this.sliderDrawable.getIntrinsicWidth(), this.sliderDrawable.getIntrinsicHeight());
         this.sliderDrawable.setCallback(this);
-        this.sliderMaskDrawable.setBounds(0, 0, this.sliderMaskDrawable.getIntrinsicWidth(), this.sliderMaskDrawable.getIntrinsicHeight());
-        this.sliderMaskDrawable.setCallback(this);
 
         this.tempMinSlideX = (-1 * (stateDrawable.getIntrinsicWidth() - frameBitmap.getIntrinsicWidth()));  //初始化X轴最小值
         setSlideX(isChecked() ? tempMinSlideX : tempMaxSlideX);  //根据选中状态初始化默认坐标
@@ -400,16 +383,14 @@ public class SwitchButton extends CompoundButton {
      * @param stateDrawableResId 状态图片ID
      * @param stateMaskDrawableResId 状态遮罩图片ID
      * @param sliderDrawableResId 滑块图片ID
-     * @param sliderMaskDrawableResId 滑块遮罩图片ID
      */
-    public void setDrawableResIds(int frameDrawableResId, int stateDrawableResId, int stateMaskDrawableResId, int sliderDrawableResId, int sliderMaskDrawableResId){
+    public void setDrawableResIds(int frameDrawableResId, int stateDrawableResId, int stateMaskDrawableResId, int sliderDrawableResId){
         if(getResources() != null){
             setDrawables(
                 getResources().getDrawable(frameDrawableResId),
                 getResources().getDrawable(stateDrawableResId),
                 getResources().getDrawable(stateMaskDrawableResId),
-                getResources().getDrawable(sliderDrawableResId),
-                getResources().getDrawable(sliderMaskDrawableResId)
+                getResources().getDrawable(sliderDrawableResId)
             );
         }
     }
