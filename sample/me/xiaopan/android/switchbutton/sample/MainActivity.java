@@ -1,12 +1,9 @@
 package me.xiaopan.android.switchbutton.sample;
 
+import me.xiaopan.android.switchbutton.R;
 import android.app.Activity;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.CompoundButton;
-import android.widget.LinearLayout;
-import android.widget.Toast;
-import me.xiaopan.android.switchbutton.R;
 
 public class MainActivity extends Activity{
 

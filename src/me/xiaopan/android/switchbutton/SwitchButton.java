@@ -1,15 +1,24 @@
 package me.xiaopan.android.switchbutton;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.*;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.DrawableContainer;
 import android.os.Build;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.view.*;
+import android.view.Gravity;
+import android.view.MotionEvent;
+import android.view.ViewConfiguration;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.CompoundButton;
 import android.widget.Scroller;
@@ -313,7 +322,8 @@ public class SwitchButton extends CompoundButton {
         return super.verifyDrawable(who) || who == frameDrawable || who == stateDrawable || who == stateMaskDrawable || who == sliderDrawable || who == sliderMaskDrawable;
     }
 
-    @Override
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+	@Override
     public void jumpDrawablesToCurrentState() {
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB){
             super.jumpDrawablesToCurrentState();
@@ -358,7 +368,7 @@ public class SwitchButton extends CompoundButton {
      */
     public void setDrawables(Drawable frameBitmap, Drawable stateDrawable, Drawable stateMaskDrawable, Drawable sliderDrawable, Drawable sliderMaskDrawable){
         if(frameBitmap == null || stateDrawable == null || stateMaskDrawable == null || sliderDrawable == null || sliderMaskDrawable == null){
-            throw new IllegalArgumentException("ALL NOT NULL");
+            throw new IllegalArgumentException("ALL NULL");
         }
 
         this.frameDrawable = frameBitmap;
