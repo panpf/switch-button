@@ -33,8 +33,8 @@ selector_switch_state.xml
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android" >
-    <item android:state_enabled="false" android:drawable="@drawable/switch_slider_disable"/>
-    <item android:drawable="@drawable/switch_slider_normal"/>
+    <item android:state_enabled="false" android:drawable="@drawable/switch_state_disable"/>
+    <item android:drawable="@drawable/switch_state_normal"/>
 </selector>
 ```
 
@@ -42,8 +42,8 @@ selector_switch_slider.xml
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android" >
-    <item android:state_enabled="false" android:drawable="@drawable/switch_state_disable"/>
-    <item android:drawable="@drawable/switch_state_normal"/>
+    <item android:state_enabled="false" android:drawable="@drawable/switch_slider_disable"/>
+    <item android:drawable="@drawable/switch_slider_normal"/>
 </selector>
 ```
 ####2.下载属性文件**[attrs.xml](https://github.com/xiaopansky/SwitchButton/raw/master/res/values/attrs.xml)**并放到values目录下。源码如下，也可复制粘贴到项目中
