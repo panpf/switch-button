@@ -24,6 +24,7 @@
             app:stateMaskDrawable="@drawable/switch_state_mask"
             app:sliderDrawable="@drawable/selector_switch_slider"/>
 
+        <!-- state drawable defined through xml-->
         <me.xiaopan.android.switchbutton.SwitchButton
 	        style="@style/item"
             android:id="@+id/switch_main_2"
@@ -32,7 +33,7 @@
 	        android:layout_marginTop="16dp"
             app:withTextInterval="16dp"
             app:frameDrawable="@drawable/switch_frame"
-            app:stateDrawable="@drawable/selector_switch_state"
+            app:stateDrawable="@drawable/selector_switch_state_shape"
             app:stateMaskDrawable="@drawable/switch_state_mask"
             app:sliderDrawable="@drawable/selector_switch_slider"/>
 
@@ -43,7 +44,7 @@
             android:background="@drawable/selector_preference_center"
             app:withTextInterval="16dp"
             app:frameDrawable="@drawable/switch_frame"
-            app:stateDrawable="@drawable/selector_switch_state"
+            app:stateDrawable="@drawable/selector_switch_state_shape_1"
             app:stateMaskDrawable="@drawable/switch_state_mask"
             app:sliderDrawable="@drawable/selector_switch_slider"/>
 
@@ -54,7 +55,7 @@
             android:background="@drawable/selector_preference_center"
             app:withTextInterval="16dp"
             app:frameDrawable="@drawable/switch_frame"
-            app:stateDrawable="@drawable/selector_switch_state"
+            app:stateDrawable="@drawable/selector_switch_state_shape_2"
             app:stateMaskDrawable="@drawable/switch_state_mask"
             app:sliderDrawable="@drawable/selector_switch_slider"/>
 
@@ -65,7 +66,7 @@
 	        android:background="@drawable/selector_preference_center"
 	        app:withTextInterval="16dp"
             app:frameDrawable="@drawable/switch_frame"
-            app:stateDrawable="@drawable/selector_switch_state"
+            app:stateDrawable="@drawable/selector_switch_state_shape_3"
             app:stateMaskDrawable="@drawable/switch_state_mask"
             app:sliderDrawable="@drawable/selector_switch_slider"/>
 
