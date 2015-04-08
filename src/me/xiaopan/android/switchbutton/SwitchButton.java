@@ -23,6 +23,9 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.CompoundButton;
 import android.widget.Scroller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * 开关按钮
  */
@@ -181,7 +184,7 @@ public class SwitchButton extends CompoundButton {
         // 绘制状态层
         if(stateDrawable != null && stateMaskDrawable != null){
             Bitmap stateBitmap = getBitmapFromDrawable(stateDrawable);
-            if(stateMaskDrawable != null && stateBitmap != null && !stateBitmap.isRecycled()){
+            if(stateMaskDrawable != null && !stateBitmap.isRecycled()){
                 // 保存并创建一个新的透明层，如果不这样做的话，画出来的背景会是黑的
                 int src = canvas.saveLayer(0, 0, getWidth(), getHeight(), paint, Canvas.MATRIX_SAVE_FLAG | Canvas.CLIP_SAVE_FLAG | Canvas.HAS_ALPHA_LAYER_SAVE_FLAG | Canvas.FULL_COLOR_LAYER_SAVE_FLAG | Canvas.CLIP_TO_LAYER_SAVE_FLAG);
                 // 绘制遮罩层
@@ -435,18 +438,38 @@ public class SwitchButton extends CompoundButton {
         return addDistance;
     }
 
-    private static Bitmap getBitmapFromDrawable(Drawable drawable){
+    private HashMap<Drawable, Bitmap> mBitmapCache = new HashMap<Drawable, Bitmap>(4);
+    private  Bitmap getBitmapFromDrawable(Drawable drawable){
         if(drawable == null){
             return null;
         }
 
-        if(drawable instanceof DrawableContainer){
+        if (drawable instanceof DrawableContainer) {
             return getBitmapFromDrawable(drawable.getCurrent());
-        }else if(drawable instanceof BitmapDrawable){
+        } else if (drawable instanceof BitmapDrawable) {
             return ((BitmapDrawable) drawable).getBitmap();
-        }else{
-            return null;
+        } else {
+            // TODO simple hack to support the shape defined through xml
+            Bitmap bitmap = mBitmapCache.get(drawable);
+            if (bitmap == null) {
+                bitmap = Bitmap.createBitmap(getResources().getDisplayMetrics(),
+                        drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_4444);
+                Canvas canvas = new Canvas(bitmap);
+                drawable.draw(canvas);
+            }
+            return bitmap;
         }
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        if (mBitmapCache.size()>0) {
+            for (Map.Entry<Drawable, Bitmap> bitmapEntry : mBitmapCache.entrySet()) {
+                bitmapEntry.getValue().recycle();
+            }
+            mBitmapCache.clear();
+        }
+        super.onDetachedFromWindow();
     }
 
     /**

@@ -2,7 +2,7 @@
 
 SwitchButton是用在Android上的开关按钮，最低兼容Android2.2
 
-![sample](https://github.com/xiaopansky/SwitchButton/raw/master/docs/sample.png)
+![sample](docs/sample.png)
 
 ##Features
 
