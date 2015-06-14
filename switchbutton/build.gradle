@@ -17,3 +17,5 @@ android {
         }
     }
 }
+
+apply from: "https://raw.githubusercontent.com/xiaopansky/android-library-publish-to-jcenter/master/bintrayUpload.gradle"

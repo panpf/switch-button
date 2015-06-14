@@ -1,10 +1,10 @@
-# ![Logo](https://github.com/xiaopansky/SwitchButton/raw/master/res/drawable-mdpi/ic_launcher.png) SwitchButton
+# ![Logo](docs/logo.png) SwitchButton
 
-SwitchButton是用在Android上的开关按钮，最低兼容Android2.2
+SwitchButton是用在Android上的开关按钮，最低兼容Android2.1
 
-![sample](docs/sample.png)
+![sample](docs/sample.gif)
 
-##Features
+###特性（Features）
 
 >* 支持滑动切换
 
@@ -14,8 +14,69 @@ SwitchButton是用在Android上的开关按钮，最低兼容Android2.2
 
 >* 支持使用遮罩实现圆角按钮
 
-##Usage
-####1.图片准备
+###使用指南（Usage Guide）
+####1. 导入SwitchButton（Import SwitchButton to your project）
+
+#####使用Gradle（Use Gradle）
+``从JCenter仓库导入（Import from jcenter）``
+
+```groovy
+dependencies{
+	compile 'me.xiaopan:switchbutton:1.2.0'
+}
+```
+
+``离线模式（Offline work）``
+
+点击下载[switchbutton-1.2.0.aar](https://github.com/xiaopansky/SwitchButton/raw/master/releases/switchbutton-1.2.0.aar)，并放到你module的libs目录下
+
+然后在你module的build.gradle文件中添加以下代码：
+```groovy
+repositories{
+    flatDir(){
+        dirs 'libs'
+    }
+}
+
+dependencies{
+    compile(name:'switchbutton-1.2.0.aar', ext:'aar')
+}
+```
+最后同步一下Gradle即可
+
+#####使用Eclipse（Use Eclipse）
+请自行下载源码集成
+
+####2. 配置最低版本（Configure min sdk version）
+SwitchButton最低兼容API v7
+
+#####使用Gradle（Use Gradle）
+在app/build.gradle文件文件中配置最低版本为7
+```groovy
+android {
+	...
+
+    defaultConfig {
+        minSdkVersion 7
+        ...
+    }
+}
+```
+
+#####使用Eclipse（Use Eclipse）
+在AndroidManifest.xml文件中配置最低版本为7
+```xml
+<manifest
+	...
+	>
+    <uses-sdk android:minSdkVersion="7"/>
+    <application>
+    ...
+    </application>
+</manifest>
+```
+
+####3.准备图片
 
 ![switch_frame.png](https://github.com/xiaopansky/SwitchButton/raw/master/res/drawable-xhdpi/switch_frame.png) **[switch_frame.png](https://github.com/xiaopansky/SwitchButton/raw/master/res/drawable-xhdpi/switch_frame.png)**
 
@@ -46,26 +107,11 @@ selector_switch_slider.xml
     <item android:drawable="@drawable/switch_slider_normal"/>
 </selector>
 ```
-####2.下载属性文件**[attrs.xml](https://github.com/xiaopansky/SwitchButton/raw/master/res/values/attrs.xml)**并放到values目录下。源码如下，也可复制粘贴到项目中
+
+####4.在布局中使用SwitchButton并通过自定义属性设置图片
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <declare-styleable name="SwitchButton">
-        <attr name="frameDrawable" format="reference|color"/>
-        <attr name="stateDrawable" format="reference|color"/>
-        <attr name="stateMaskDrawable" format="reference|color"/>
-        <attr name="sliderDrawable" format="reference|color"/>
-	    <attr name="withTextInterval" format="dimension"/>
-    </declare-styleable>
-</resources>
-```
-
-####3.下载**[SwitchButton.java](https://github.com/xiaopansky/SwitchButton/raw/master/src/me/xiaopan/android/switchbutton/SwitchButton.java)**并放到任意源码目录下，注意放到你项目中要修改R文件的引用才能编译通过
-
-####4.在布局中添加自定义属性并引用SwitchButton
-```xml
-<?xml version="1.0" encoding="utf-8"?>
-<me.xiaopan.android.switchbutton.SwitchButton
+<me.xiaopan.switchbutton.SwitchButton
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res/me.xiaopan.android.switchbutton"
     android:id="@+id/switch"
@@ -81,22 +127,21 @@ selector_switch_slider.xml
     app:stateMaskDrawable="@drawable/switch_state_mask"
     app:sliderDrawable="@drawable/selector_switch_slider"/>
 ```
-
-####5.属性解释
+属性解释
 >* withTextInterval：标题文字和按钮之间的距离
 >* frameDrawable：框架图片，定义按钮的大小以及显示区域
 >* stateDrawable：状态图片，显示开启或关闭
 >* stateMaskDrawable：状态图片遮罩层
 >* sliderDrawable：滑块图片
 
-####6.其它方法：
+其它方法：
 >* setDrawables(Drawable frameBitmap, Drawable stateDrawable, Drawable stateMaskDrawable, Drawable sliderDrawable)：设置图片
 >* setDrawableResIds(int frameDrawableResId, int stateDrawableResId, int stateMaskDrawableResId, int sliderDrawableResId)：设置图片ID
 >* setWithTextInterval(int withTextInterval)：设置标题和按钮的间距，默认为16
 >* setDuration(int duration)：设置动画持续时间，单位毫秒，默认为200
 >* setMinChangeDistanceScale(float minChangeDistanceScale)：设置滑动有效距离比例，默认为0.2。例如按钮宽度为100，比例为0.2，那么只有当滑动距离大于等于(100*0.2)才会切换状态，否则就回滚
 
-###示例图片源码
+示例图片源码
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView
@@ -112,7 +157,7 @@ selector_switch_slider.xml
 	    android:paddingTop="16dp"
 	    android:paddingBottom="16dp">
 
-        <me.xiaopan.android.switchbutton.SwitchButton
+        <me.xiaopan.switchbutton.SwitchButton
 	        style="@style/item"
             android:id="@+id/switch_main_1"
             android:text="接受推送"
@@ -124,7 +169,7 @@ selector_switch_slider.xml
             app:stateMaskDrawable="@drawable/switch_state_mask"
             app:sliderDrawable="@drawable/selector_switch_slider"/>
 
-        <me.xiaopan.android.switchbutton.SwitchButton
+        <me.xiaopan.switchbutton.SwitchButton
 	        style="@style/item"
             android:id="@+id/switch_main_2"
             android:text="每日头条"
@@ -136,7 +181,7 @@ selector_switch_slider.xml
             app:stateMaskDrawable="@drawable/switch_state_mask"
             app:sliderDrawable="@drawable/selector_switch_slider"/>
 
-        <me.xiaopan.android.switchbutton.SwitchButton
+        <me.xiaopan.switchbutton.SwitchButton
             style="@style/item"
             android:id="@+id/switch_main_3"
             android:text="每日热卖"
@@ -147,7 +192,7 @@ selector_switch_slider.xml
             app:stateMaskDrawable="@drawable/switch_state_mask"
             app:sliderDrawable="@drawable/selector_switch_slider"/>
 
-        <me.xiaopan.android.switchbutton.SwitchButton
+        <me.xiaopan.switchbutton.SwitchButton
             style="@style/item"
             android:id="@+id/switch_main_4"
             android:text="优惠促销"
@@ -158,7 +203,7 @@ selector_switch_slider.xml
             app:stateMaskDrawable="@drawable/switch_state_mask"
             app:sliderDrawable="@drawable/selector_switch_slider"/>
 
-        <me.xiaopan.android.switchbutton.SwitchButton
+        <me.xiaopan.switchbutton.SwitchButton
 	        style="@style/item"
             android:id="@+id/switch_main_5"
             android:text="偶像动态"
@@ -169,7 +214,7 @@ selector_switch_slider.xml
             app:stateMaskDrawable="@drawable/switch_state_mask"
             app:sliderDrawable="@drawable/selector_switch_slider"/>
 
-		<me.xiaopan.android.switchbutton.SwitchButton
+		<me.xiaopan.switchbutton.SwitchButton
 			style="@style/item"
 			android:id="@+id/switch_main_6"
 			android:text="娱乐播报"
@@ -180,7 +225,7 @@ selector_switch_slider.xml
 			app:stateMaskDrawable="@drawable/switch_state_mask"
 			app:sliderDrawable="@drawable/selector_switch_slider"/>
 
-        <me.xiaopan.android.switchbutton.SwitchButton
+        <me.xiaopan.switchbutton.SwitchButton
             style="@style/item"
             android:id="@+id/switch_main_7"
             android:text="天气预报"
@@ -192,7 +237,7 @@ selector_switch_slider.xml
             app:stateMaskDrawable="@drawable/switch_state_mask"
             app:sliderDrawable="@drawable/selector_switch_slider"/>
 
-        <me.xiaopan.android.switchbutton.SwitchButton
+        <me.xiaopan.switchbutton.SwitchButton
             style="@style/item"
             android:id="@+id/switch_main_8"
             android:text="系统消息"
