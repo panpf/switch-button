@@ -91,6 +91,7 @@ switch_state_disable.png
 ![switch_state_disable.png](docs/switch_state_disable.png) 
 
 switch_state_mask.png
+
 ![switch_state_mask.png](docs/switch_state_mask.png) 
 
 switch_slider_normal.png
