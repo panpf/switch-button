@@ -1,27 +1,8 @@
-# built application files
-*.apk
-*.ap_
-
-# files for the dex VM
-*.dex
-
-# Java class files
-*.class
-
-# Local configuration file (sdk path, etc)
-local.properties
-
-# Eclipse project files
-#.classpath
-#.project
-#.settings/
-bin/
-gen/
-
-# Idea files
-.idea/
-#*.iml
-
-# Gradle files
-.gradle/
-build/
+.gradle
+/local.properties
+/.idea
+*.iml
+/.idea/libraries
+.DS_Store
+/build
+/captures
