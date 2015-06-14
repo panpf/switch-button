@@ -4,14 +4,16 @@ SwitchButton是用在Android上的开关按钮，最低兼容Android2.1
 
 ![sample](docs/sample.gif)
 
+###示例APP（Sample app）
+![SampleApp](docs/qr_download.png)
+
+扫描二维码下载示例APP，也可[点击直接下载（Click download APK）](https://github.com/xiaopansky/SwitchButton/raw/master/releases/sample.apk)
+
 ###特性（Features）
 
 >* 支持滑动切换
-
 >* 支持标题
-
 >* 支持Left、Top、Right、Bottom Drawable
-
 >* 支持使用遮罩实现圆角按钮
 
 ###使用指南（Usage Guide）
