@@ -79,20 +79,26 @@ android {
 ####3.准备图片
 
  switch_frame.png
+ 
 ![switch_frame.png](docs/switch_frame.png)
 
 switch_state_normal.png
+
 ![switch_state_normal.png](docs/switch_state_normal.png) 
 
-![switch_state_disable.png](docs/switch_state_disable.png) switch_state_disable.png
+switch_state_disable.png
+
+![switch_state_disable.png](docs/switch_state_disable.png) 
 
 switch_state_mask.png
 ![switch_state_mask.png](docs/switch_state_mask.png) 
 
 switch_slider_normal.png
+
 ![switch_slider_normal.png](docs/switch_slider_normal.png) 
 
 switch_slider_disable.png
+
 ![switch_slider_disable.png](docs/switch_slider_disable.png) 
 
 selector_switch_state.xml
