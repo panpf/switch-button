@@ -128,7 +128,7 @@ selector_switch_slider.xml
 <?xml version="1.0" encoding="utf-8"?>
 <me.xiaopan.switchbutton.SwitchButton
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res/me.xiaopan.android.switchbutton"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/switch"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -161,7 +161,7 @@ selector_switch_slider.xml
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView
 	xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:app="http://schemas.android.com/apk/res/me.xiaopan.android.switchbutton"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
 	android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white">
