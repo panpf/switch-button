@@ -31,7 +31,7 @@ dependencies{
 
 ``离线模式（Offline work）``
 
-点击下载[switchbutton-1.2.0.aar](https://github.com/xiaopansky/SwitchButton/raw/master/releases/switchbutton-1.2.0.aar)，并放到你module的libs目录下
+首先到[releases](https://github.com/xiaopansky/Sketch/releases)页面下载最新版的aar包（`这里以switchbutton-1.2.0.aar为例，具体请以你下载到的文件名称为准`），并放到你module的libs目录下
 
 然后在你module的build.gradle文件中添加以下代码：
 ```groovy
@@ -48,7 +48,8 @@ dependencies{
 最后同步一下Gradle即可
 
 #####使用Eclipse（Use Eclipse）
-请自行下载源码集成
+1. 首先到[releases](https://github.com/xiaopansky/Sketch/releases)页面下载最新版的aar包（`这里以switchbutton-1.2.0.aar为例，具体请以你下载到的文件名称为准`）
+2. 然后参考文章[1分钟不用改任何代码在Eclipse中使用AAR](http://blog.csdn.net/u013308121/article/details/46717499)集成aar
 
 ####2. 配置最低版本（Configure min sdk version）
 SwitchButton最低兼容API v7
