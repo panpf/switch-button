@@ -1,86 +1,38 @@
 # ![Logo](docs/logo.png) SwitchButton
 
+[![Release Version](https://img.shields.io/github/release/xiaopansky/SwitchButton.svg)](https://github.com/xiaopansky/SwitchButton/releases)
+
 SwitchButton是用在Android上的开关按钮，最低兼容Android2.1
 
 ![sample](docs/sample.gif)
 
-###示例APP（Sample app）
+### 示例APP
 
 [Click download sample APK](https://github.com/xiaopansky/SwitchButton/raw/master/docs/sample.apk)
 
 ![SampleApp](docs/qr_download.png)
 
-###特性（Features）
+### 特性
 
 >* 支持滑动切换
 >* 支持标题
 >* 支持Left、Top、Right、Bottom Drawable
 >* 支持使用遮罩实现圆角按钮
 
-###使用指南（Usage Guide）
-####1. 导入SwitchButton（Import SwitchButton to your project）
-
-#####使用Gradle（Use Gradle）
-``从JCenter仓库导入（Import from jcenter）``
+### 使用指南（Usage Guide）
+#### 导入
+从JCenter导入 
 
 ```groovy
 dependencies{
-	compile 'me.xiaopan:switchbutton:1.2.0'
+	compile 'me.xiaopan:switchbutton:lastVersionName'
 }
 ```
+`lastVersionName`：[![Release Version](https://img.shields.io/github/release/xiaopansky/SwitchButton.svg)](https://github.com/xiaopansky/SwitchButton/releases)`（不带v）`
 
-``离线模式（Offline work）``
+最低支持`Android2.2 API 7`
 
-首先到[releases](https://github.com/xiaopansky/Sketch/releases)页面下载最新版的aar包（`这里以switchbutton-1.2.0.aar为例，具体请以你下载到的文件名称为准`），并放到你module的libs目录下
-
-然后在你module的build.gradle文件中添加以下代码：
-```groovy
-repositories{
-    flatDir(){
-        dirs 'libs'
-    }
-}
-
-dependencies{
-    compile(name:'switchbutton-1.2.0.aar', ext:'aar')
-}
-```
-最后同步一下Gradle即可
-
-#####使用Eclipse（Use Eclipse）
-1. 首先到[releases](https://github.com/xiaopansky/Sketch/releases)页面下载最新版的aar包（`这里以switchbutton-1.2.0.aar为例，具体请以你下载到的文件名称为准`）
-2. 然后参考文章[1分钟不用改任何代码在Eclipse中使用AAR](http://blog.csdn.net/u013308121/article/details/46717499)集成aar
-
-####2. 配置最低版本（Configure min sdk version）
-SwitchButton最低兼容API v7
-
-#####使用Gradle（Use Gradle）
-在app/build.gradle文件文件中配置最低版本为7
-```groovy
-android {
-	...
-
-    defaultConfig {
-        minSdkVersion 7
-        ...
-    }
-}
-```
-
-#####使用Eclipse（Use Eclipse）
-在AndroidManifest.xml文件中配置最低版本为7
-```xml
-<manifest
-	...
-	>
-    <uses-sdk android:minSdkVersion="7"/>
-    <application>
-    ...
-    </application>
-</manifest>
-```
-
-####3.准备图片
+#### 准备图片
 
  switch_frame.png
  
@@ -124,7 +76,7 @@ selector_switch_slider.xml
 </selector>
 ```
 
-####4.在布局中使用SwitchButton并通过自定义属性设置图片
+#### 在布局中使用SwitchButton并通过自定义属性设置图片
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <me.xiaopan.switchbutton.SwitchButton
@@ -268,7 +220,7 @@ selector_switch_slider.xml
 
 ```
 
-##License
+### License
 ```java
 /*
  * Copyright (C) 2013 Peng fei Pan <sky@xiaopan.me>
