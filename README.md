@@ -1,5 +1,6 @@
 # ![Logo](docs/logo.png) SwitchButton
 
+[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-SwitchButton-green.svg?style=true)](https://android-arsenal.com/details/1/4175)
 [![Release Version](https://img.shields.io/github/release/xiaopansky/SwitchButton.svg)](https://github.com/xiaopansky/SwitchButton/releases)
 
 SwitchButton是用在Android上的开关按钮，最低兼容Android2.1
