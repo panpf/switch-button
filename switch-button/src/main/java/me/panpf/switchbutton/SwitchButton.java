@@ -1,4 +1,4 @@
-package me.xiaopan.switchbutton;
+package me.panpf.switchbutton;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -41,7 +41,7 @@ public class SwitchButton extends CompoundButton {
     private int touchSlop;
     private int withTextInterval = 16;   //文字和按钮之间的间距
     private float touchX;   //记录上次触摸坐标，用于计算滑动距离
-    private float minChangeDistanceScale = 0.2f;   //有效距离比例，例如按钮宽度为100，比例为0.3，那么只有当滑动距离大于等于(100*0.3)才会切换状态，否则就回滚
+    private float minChangeDistanceScale = 0.2f;   //有效距离比例，例如按钮宽度为 100，比例为 0.3，那么只有当滑动距离大于等于 (100*0.3) 才会切换状态，否则就回滚
     private Paint paint;    //画笔，用来绘制遮罩效果
     private RectF buttonRectF;   //按钮的位置
     private Drawable frameDrawable; //框架层图片
@@ -67,9 +67,10 @@ public class SwitchButton extends CompoundButton {
 
     /**
      * 初始化
+     *
      * @param attrs 属性
      */
-    private void init(AttributeSet attrs){
+    private void init(AttributeSet attrs) {
         setGravity(Gravity.CENTER_VERTICAL);
         paint = new Paint();
         paint.setColor(Color.RED);
@@ -77,15 +78,15 @@ public class SwitchButton extends CompoundButton {
         switchScroller = new SwitchScroller(getContext(), new AccelerateDecelerateInterpolator());
         buttonRectF = new RectF();
 
-        if(attrs != null && getContext() != null){
+        if (attrs != null && getContext() != null) {
             TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.SwitchButton);
-            if(typedArray != null){
+            if (typedArray != null) {
                 withTextInterval = (int) typedArray.getDimension(R.styleable.SwitchButton_withTextInterval, 0.0f);
                 setDrawables(
-                    typedArray.getDrawable(R.styleable.SwitchButton_frameDrawable),
-                    typedArray.getDrawable(R.styleable.SwitchButton_stateDrawable),
-                    typedArray.getDrawable(R.styleable.SwitchButton_stateMaskDrawable),
-                    typedArray.getDrawable(R.styleable.SwitchButton_sliderDrawable)
+                        typedArray.getDrawable(R.styleable.SwitchButton_frameDrawable),
+                        typedArray.getDrawable(R.styleable.SwitchButton_stateDrawable),
+                        typedArray.getDrawable(R.styleable.SwitchButton_stateMaskDrawable),
+                        typedArray.getDrawable(R.styleable.SwitchButton_sliderDrawable)
                 );
                 typedArray.recycle();
             }
@@ -102,13 +103,13 @@ public class SwitchButton extends CompoundButton {
         //计算宽度
         int measureWidth;
         switch (MeasureSpec.getMode(widthMeasureSpec)) {
-            case MeasureSpec.AT_MOST://如果widthSize是当前视图可使用的最大宽度
+            case MeasureSpec.AT_MOST:   // 如果 widthSize 是当前视图可使用的最大宽度
                 measureWidth = getCompoundPaddingLeft() + getCompoundPaddingRight();
                 break;
-            case MeasureSpec.EXACTLY://如果widthSize是当前视图可使用的绝对宽度
+            case MeasureSpec.EXACTLY:   // 如果 widthSize 是当前视图可使用的绝对宽度
                 measureWidth = MeasureSpec.getSize(widthMeasureSpec);
                 break;
-            case MeasureSpec.UNSPECIFIED://如果widthSize对当前视图宽度的计算没有任何参考意义
+            case MeasureSpec.UNSPECIFIED:   // 如果 widthSize 对当前视图宽度的计算没有任何参考意义
                 measureWidth = getCompoundPaddingLeft() + getCompoundPaddingRight();
                 break;
             default:
@@ -119,27 +120,27 @@ public class SwitchButton extends CompoundButton {
         //计算高度
         int measureHeight;
         switch (MeasureSpec.getMode(heightMeasureSpec)) {
-            case MeasureSpec.AT_MOST://如果heightSize是当前视图可使用的最大宽度
-                measureHeight = (frameDrawable != null? frameDrawable.getIntrinsicHeight():0) + getCompoundPaddingTop() + getCompoundPaddingBottom();
+            case MeasureSpec.AT_MOST:   // 如果 heightSize 是当前视图可使用的最大宽度
+                measureHeight = (frameDrawable != null ? frameDrawable.getIntrinsicHeight() : 0) + getCompoundPaddingTop() + getCompoundPaddingBottom();
                 break;
             case MeasureSpec.EXACTLY://如果heightSize是当前视图可使用的绝对宽度
                 measureHeight = MeasureSpec.getSize(heightMeasureSpec);
                 break;
-            case MeasureSpec.UNSPECIFIED://如果heightSize对当前视图宽度的计算没有任何参考意义
-                measureHeight = (frameDrawable != null? frameDrawable.getIntrinsicHeight():0) + getCompoundPaddingTop() + getCompoundPaddingBottom();
+            case MeasureSpec.UNSPECIFIED:   // 如果 heightSize 对当前视图宽度的计算没有任何参考意义
+                measureHeight = (frameDrawable != null ? frameDrawable.getIntrinsicHeight() : 0) + getCompoundPaddingTop() + getCompoundPaddingBottom();
                 break;
             default:
-                measureHeight = (frameDrawable != null? frameDrawable.getIntrinsicHeight():0) + getCompoundPaddingTop() + getCompoundPaddingBottom();
+                measureHeight = (frameDrawable != null ? frameDrawable.getIntrinsicHeight() : 0) + getCompoundPaddingTop() + getCompoundPaddingBottom();
                 break;
         }
 
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
-        if(measureWidth < getMeasuredWidth()){
+        if (measureWidth < getMeasuredWidth()) {
             measureWidth = getMeasuredWidth();
         }
 
-        if(measureHeight < getMeasuredHeight()){
+        if (measureHeight < getMeasuredHeight()) {
             measureHeight = getMeasuredHeight();
         }
 
@@ -153,35 +154,37 @@ public class SwitchButton extends CompoundButton {
         int drawableRightWidth = 0;
         int drawableTopHeight = 0;
         int drawableBottomHeight = 0;
-        if(drawables != null){
-            if(drawables.length > 1 && drawables[1] != null){
+        if (drawables != null) {
+            if (drawables.length > 1 && drawables[1] != null) {
                 drawableTopHeight = drawables[1].getIntrinsicHeight() + getCompoundDrawablePadding();
             }
-            if(drawables.length > 2 && drawables[2] != null){
+            if (drawables.length > 2 && drawables[2] != null) {
                 drawableRightWidth = drawables[2].getIntrinsicWidth() + getCompoundDrawablePadding();
             }
-            if(drawables.length > 3 && drawables[3] != null){
+            if (drawables.length > 3 && drawables[3] != null) {
                 drawableBottomHeight = drawables[3].getIntrinsicHeight() + getCompoundDrawablePadding();
             }
         }
 
-        buttonLeft = (getWidth() - (frameDrawable!=null?frameDrawable.getIntrinsicWidth():0) - getPaddingRight() - drawableRightWidth);
-        buttonTop = (getHeight() - (frameDrawable!=null?frameDrawable.getIntrinsicHeight():0) + drawableTopHeight - drawableBottomHeight) / 2;
-        buttonRectF.set(buttonLeft, buttonTop, buttonLeft + (frameDrawable != null ? frameDrawable.getIntrinsicWidth() : 0), buttonTop + (frameDrawable != null ? frameDrawable.getIntrinsicHeight() : 0));
+        buttonLeft = (getWidth() - (frameDrawable != null ? frameDrawable.getIntrinsicWidth() : 0) - getPaddingRight() - drawableRightWidth);
+        buttonTop = (getHeight() - (frameDrawable != null ? frameDrawable.getIntrinsicHeight() : 0) + drawableTopHeight - drawableBottomHeight) / 2;
+        int buttonRight = buttonLeft + (frameDrawable != null ? frameDrawable.getIntrinsicWidth() : 0);
+        int buttonBottom = buttonTop + (frameDrawable != null ? frameDrawable.getIntrinsicHeight() : 0);
+        buttonRectF.set(buttonLeft, buttonTop, buttonRight, buttonBottom);
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        // 保存图层并全体偏移，让paddingTop和paddingLeft生效
+        // 保存图层并全体偏移，让 paddingTop 和 paddingLeft 生效
         canvas.save();
         canvas.translate(buttonLeft, buttonTop);
 
         // 绘制状态层
-        if(stateDrawable != null && stateMaskDrawable != null){
+        if (stateDrawable != null && stateMaskDrawable != null) {
             Bitmap stateBitmap = getBitmapFromDrawable(stateDrawable);
-            if(stateMaskDrawable != null && stateBitmap != null && !stateBitmap.isRecycled()){
+            if (stateMaskDrawable != null && stateBitmap != null && !stateBitmap.isRecycled()) {
                 // 保存并创建一个新的透明层，如果不这样做的话，画出来的背景会是黑的
                 int src = canvas.saveLayer(0, 0, getWidth(), getHeight(), paint, Canvas.MATRIX_SAVE_FLAG | Canvas.CLIP_SAVE_FLAG | Canvas.HAS_ALPHA_LAYER_SAVE_FLAG | Canvas.FULL_COLOR_LAYER_SAVE_FLAG | Canvas.CLIP_TO_LAYER_SAVE_FLAG);
                 // 绘制遮罩层
@@ -196,14 +199,14 @@ public class SwitchButton extends CompoundButton {
         }
 
         // 绘制框架层
-        if(frameDrawable != null){
+        if (frameDrawable != null) {
             frameDrawable.draw(canvas);
         }
 
         // 绘制滑块层
-        if(sliderDrawable != null){
+        if (sliderDrawable != null) {
             Bitmap sliderBitmap = getBitmapFromDrawable(sliderDrawable);
-            if(sliderBitmap != null && !sliderBitmap.isRecycled()){
+            if (sliderBitmap != null && !sliderBitmap.isRecycled()) {
                 canvas.drawBitmap(sliderBitmap, tempSlideX, 0, paint);
             }
         }
@@ -215,15 +218,15 @@ public class SwitchButton extends CompoundButton {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         int eventType;
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO) {
             eventType = event.getActionMasked();
-        }else{
+        } else {
             eventType = event.getAction() & MotionEvent.ACTION_MASK;
         }
-        switch(eventType){
-            case MotionEvent.ACTION_DOWN : {
+        switch (eventType) {
+            case MotionEvent.ACTION_DOWN: {
                 // 如果按钮当前可用并且按下位置正好在按钮之内
-                if(isEnabled() && buttonRectF.contains(event.getX(), event.getY())){
+                if (isEnabled() && buttonRectF.contains(event.getX(), event.getY())) {
                     touchMode = TOUCH_MODE_DOWN;
                     tempTotalSlideDistance = 0; // 清空总滑动距离
                     touchX = event.getX();  // 记录X轴坐标
@@ -232,12 +235,12 @@ public class SwitchButton extends CompoundButton {
                 break;
             }
 
-            case MotionEvent.ACTION_MOVE : {
-                switch(touchMode){
-                    case TOUCH_MODE_IDLE : {
+            case MotionEvent.ACTION_MOVE: {
+                switch (touchMode) {
+                    case TOUCH_MODE_IDLE: {
                         break;
                     }
-                    case TOUCH_MODE_DOWN : {
+                    case TOUCH_MODE_DOWN: {
                         final float x = event.getX();
                         if (Math.abs(x - touchX) > touchSlop) {
                             touchMode = TOUCH_MODE_DRAGGING;
@@ -245,7 +248,7 @@ public class SwitchButton extends CompoundButton {
                             // 如果不加这段代码的话，当被ScrollView包括的时候，你会发现，当你在此按钮上按下，
                             // 紧接着滑动的时候ScrollView会跟着滑动，然后按钮的事件就丢失了，这会造成很难完成滑动操作
                             // 这样一来用户会抓狂的，加上这句话呢ScrollView就不会滚动了
-                            if(getParent() != null){
+                            if (getParent() != null) {
                                 getParent().requestDisallowInterceptTouchEvent(true);
                             }
                             touchX = x;
@@ -253,7 +256,7 @@ public class SwitchButton extends CompoundButton {
                         }
                         break;
                     }
-                    case TOUCH_MODE_DRAGGING : {
+                    case TOUCH_MODE_DRAGGING: {
                         float newTouchX = event.getX();
                         tempTotalSlideDistance += setSlideX(tempSlideX + ((int) (newTouchX - touchX)));    // 更新X轴坐标并记录总滑动距离
                         touchX = newTouchX;
@@ -264,32 +267,32 @@ public class SwitchButton extends CompoundButton {
                 break;
             }
 
-            case MotionEvent.ACTION_UP :{
+            case MotionEvent.ACTION_UP: {
                 setClickable(true);
 
                 //结尾滑动操作
-                if(touchMode == TOUCH_MODE_DRAGGING){// 这是滑动操作
+                if (touchMode == TOUCH_MODE_DRAGGING) {// 这是滑动操作
                     touchMode = TOUCH_MODE_IDLE;
                     // 如果滑动距离大于等于最小切换距离就切换状态，否则回滚
-                    if(Math.abs(tempTotalSlideDistance) >= Math.abs(frameDrawable.getIntrinsicWidth() * minChangeDistanceScale)){
+                    if (Math.abs(tempTotalSlideDistance) >= Math.abs(frameDrawable.getIntrinsicWidth() * minChangeDistanceScale)) {
                         toggle();   //切换状态
-                    }else{
+                    } else {
                         switchScroller.startScroll(isChecked());
                     }
-                }else if(touchMode == TOUCH_MODE_DOWN){ // 这是按在按钮上的单击操作
+                } else if (touchMode == TOUCH_MODE_DOWN) { // 这是按在按钮上的单击操作
                     touchMode = TOUCH_MODE_IDLE;
                     toggle();
                 }
                 break;
             }
 
-            case MotionEvent.ACTION_CANCEL :
-            case MotionEvent.ACTION_OUTSIDE : {
+            case MotionEvent.ACTION_CANCEL:
+            case MotionEvent.ACTION_OUTSIDE: {
                 setClickable(true);
                 if (touchMode == TOUCH_MODE_DRAGGING) {
                     touchMode = TOUCH_MODE_IDLE;
                     switchScroller.startScroll(isChecked()); //回滚
-                }else{
+                } else {
                     touchMode = TOUCH_MODE_IDLE;
                 }
                 break;
@@ -304,10 +307,10 @@ public class SwitchButton extends CompoundButton {
     protected void drawableStateChanged() {
         super.drawableStateChanged();
         int[] drawableState = getDrawableState();
-        if(frameDrawable != null) frameDrawable.setState(drawableState);  //更新框架图片的状态
-        if(stateDrawable != null) stateDrawable.setState(drawableState); //更新状态图片的状态
-        if(stateMaskDrawable != null) stateMaskDrawable.setState(drawableState); //更新状态遮罩图片的状态
-        if(sliderDrawable != null) sliderDrawable.setState(drawableState); //更新滑块图片的状态
+        if (frameDrawable != null) frameDrawable.setState(drawableState);  //更新框架图片的状态
+        if (stateDrawable != null) stateDrawable.setState(drawableState); //更新状态图片的状态
+        if (stateMaskDrawable != null) stateMaskDrawable.setState(drawableState); //更新状态遮罩图片的状态
+        if (sliderDrawable != null) sliderDrawable.setState(drawableState); //更新滑块图片的状态
         invalidate();
     }
 
@@ -317,25 +320,25 @@ public class SwitchButton extends CompoundButton {
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-	@Override
+    @Override
     public void jumpDrawablesToCurrentState() {
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             super.jumpDrawablesToCurrentState();
-            if(frameDrawable != null) frameDrawable.jumpToCurrentState();
-            if(stateDrawable != null) stateDrawable.jumpToCurrentState();
-            if(stateMaskDrawable != null) stateMaskDrawable.jumpToCurrentState();
-            if(sliderDrawable != null) sliderDrawable.jumpToCurrentState();
+            if (frameDrawable != null) frameDrawable.jumpToCurrentState();
+            if (stateDrawable != null) stateDrawable.jumpToCurrentState();
+            if (stateMaskDrawable != null) stateMaskDrawable.jumpToCurrentState();
+            if (sliderDrawable != null) sliderDrawable.jumpToCurrentState();
         }
     }
 
     @Override
-     public void setChecked(boolean checked) {
+    public void setChecked(boolean checked) {
         boolean changed = checked != isChecked();
         super.setChecked(checked);
-        if(changed){
-            if(getWidth() > 0 && switchScroller != null){   //如果已经绘制完成
+        if (changed) {
+            if (getWidth() > 0 && switchScroller != null) {   //如果已经绘制完成
                 switchScroller.startScroll(checked);
-            }else{
+            } else {
                 setSlideX(isChecked() ? tempMinSlideX : tempMaxSlideX);  //直接修改X轴坐标，因为尚未绘制完成的时候，动画执行效果不理想，所以直接修改坐标，而不执行动画
             }
         }
@@ -344,7 +347,7 @@ public class SwitchButton extends CompoundButton {
     @Override
     public int getCompoundPaddingRight() {
         //重写此方法实现让文本提前换行，避免当文本过长时被按钮给盖住
-        int padding = super.getCompoundPaddingRight() + (frameDrawable!=null?frameDrawable.getIntrinsicWidth():0);
+        int padding = super.getCompoundPaddingRight() + (frameDrawable != null ? frameDrawable.getIntrinsicWidth() : 0);
         if (!TextUtils.isEmpty(getText())) {
             padding += withTextInterval;
         }
@@ -353,13 +356,14 @@ public class SwitchButton extends CompoundButton {
 
     /**
      * 设置图片
-     * @param frameBitmap 框架图片
-     * @param stateDrawable 状态图片
+     *
+     * @param frameBitmap       框架图片
+     * @param stateDrawable     状态图片
      * @param stateMaskDrawable 状态遮罩图片
-     * @param sliderDrawable 滑块图片
+     * @param sliderDrawable    滑块图片
      */
-    public void setDrawables(Drawable frameBitmap, Drawable stateDrawable, Drawable stateMaskDrawable, Drawable sliderDrawable){
-        if(frameBitmap == null || stateDrawable == null || stateMaskDrawable == null || sliderDrawable == null){
+    public void setDrawables(Drawable frameBitmap, Drawable stateDrawable, Drawable stateMaskDrawable, Drawable sliderDrawable) {
+        if (frameBitmap == null || stateDrawable == null || stateMaskDrawable == null || sliderDrawable == null) {
             throw new IllegalArgumentException("ALL NULL");
         }
 
@@ -385,24 +389,26 @@ public class SwitchButton extends CompoundButton {
 
     /**
      * 设置图片
-     * @param frameDrawableResId 框架图片ID
-     * @param stateDrawableResId 状态图片ID
+     *
+     * @param frameDrawableResId     框架图片ID
+     * @param stateDrawableResId     状态图片ID
      * @param stateMaskDrawableResId 状态遮罩图片ID
-     * @param sliderDrawableResId 滑块图片ID
+     * @param sliderDrawableResId    滑块图片ID
      */
-    public void setDrawableResIds(int frameDrawableResId, int stateDrawableResId, int stateMaskDrawableResId, int sliderDrawableResId){
-        if(getResources() != null){
+    public void setDrawableResIds(int frameDrawableResId, int stateDrawableResId, int stateMaskDrawableResId, int sliderDrawableResId) {
+        if (getResources() != null) {
             setDrawables(
-                getResources().getDrawable(frameDrawableResId),
-                getResources().getDrawable(stateDrawableResId),
-                getResources().getDrawable(stateMaskDrawableResId),
-                getResources().getDrawable(sliderDrawableResId)
+                    getResources().getDrawable(frameDrawableResId),
+                    getResources().getDrawable(stateDrawableResId),
+                    getResources().getDrawable(stateMaskDrawableResId),
+                    getResources().getDrawable(sliderDrawableResId)
             );
         }
     }
 
     /**
      * 设置动画持续时间
+     *
      * @param duration 动画持续时间
      */
     public void setDuration(int duration) {
@@ -411,6 +417,7 @@ public class SwitchButton extends CompoundButton {
 
     /**
      * 设置有效距离比例
+     *
      * @param minChangeDistanceScale 有效距离比例，例如按钮宽度为100，比例为0.3，那么只有当滑动距离大于等于(100*0.3)才会切换状态，否则就回滚
      */
     public void setMinChangeDistanceScale(float minChangeDistanceScale) {
@@ -419,6 +426,7 @@ public class SwitchButton extends CompoundButton {
 
     /**
      * 设置按钮和文本之间的间距
+     *
      * @param withTextInterval 按钮和文本之间的间距，当有文本的时候此参数才能派上用场
      */
     public void setWithTextInterval(int withTextInterval) {
@@ -428,29 +436,30 @@ public class SwitchButton extends CompoundButton {
 
     /**
      * 设置X轴坐标
+     *
      * @param newSlideX 新的X轴坐标
      * @return Xz轴坐标增加的值，例如newSlideX等于100，旧的X轴坐标为49，那么返回值就是51
      */
     private int setSlideX(int newSlideX) {
         //防止滑动超出范围
-        if(newSlideX < tempMinSlideX) newSlideX = tempMinSlideX;
-        if(newSlideX > tempMaxSlideX) newSlideX = tempMaxSlideX;
+        if (newSlideX < tempMinSlideX) newSlideX = tempMinSlideX;
+        if (newSlideX > tempMaxSlideX) newSlideX = tempMaxSlideX;
         //计算本次距离增量
         int addDistance = newSlideX - tempSlideX;
         this.tempSlideX = newSlideX;
         return addDistance;
     }
 
-    private Bitmap getBitmapFromDrawable(Drawable drawable){
-        if(drawable == null){
+    private Bitmap getBitmapFromDrawable(Drawable drawable) {
+        if (drawable == null) {
             return null;
         }
 
-        if(drawable instanceof DrawableContainer) {
+        if (drawable instanceof DrawableContainer) {
             return getBitmapFromDrawable(drawable.getCurrent());
-        }else if(drawable instanceof BitmapDrawable) {
+        } else if (drawable instanceof BitmapDrawable) {
             return ((BitmapDrawable) drawable).getBitmap();
-        }else{
+        } else {
             return null;
         }
     }
@@ -467,16 +476,17 @@ public class SwitchButton extends CompoundButton {
 
         /**
          * 开始滚动
+         *
          * @param checked 是否选中
          */
-        public void startScroll(boolean checked){
-            scroller.startScroll(tempSlideX, 0, (checked? tempMinSlideX : tempMaxSlideX) - tempSlideX, 0, duration);
+        public void startScroll(boolean checked) {
+            scroller.startScroll(tempSlideX, 0, (checked ? tempMinSlideX : tempMaxSlideX) - tempSlideX, 0, duration);
             post(this);
         }
 
         @Override
         public void run() {
-            if(scroller.computeScrollOffset()){
+            if (scroller.computeScrollOffset()) {
                 setSlideX(scroller.getCurrX());
                 invalidate();
                 post(this);

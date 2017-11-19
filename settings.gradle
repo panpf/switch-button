@@ -1,1 +1,1 @@
-include ':sample', ':switchbutton'
+include ':sample', ':switch-button'

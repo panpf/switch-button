@@ -1,4 +1,4 @@
-package me.xiaopan.switchbuttonsample;
+package me.panpf.switchbutton.sample;
 
 import android.app.Activity;
 import android.os.Bundle;

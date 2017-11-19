@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="me.xiaopan.switchbuttonsample" >
+    package="me.panpf.switchbutton.sample" >
 
     <application
         android:allowBackup="true"

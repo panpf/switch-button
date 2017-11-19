@@ -7,12 +7,12 @@
     android:background="@android:color/white">
     <LinearLayout
         android:orientation="vertical"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:paddingTop="16dp"
         android:paddingBottom="16dp">
 
-        <me.xiaopan.switchbutton.SwitchButton
+        <me.panpf.switchbutton.SwitchButton
             style="@style/item"
             android:id="@+id/switch_main_1"
             android:text="接受推送"
@@ -25,7 +25,7 @@
             app:sliderDrawable="@drawable/selector_switch_slider"/>
 
         <!-- state drawable defined through xml-->
-        <me.xiaopan.switchbutton.SwitchButton
+        <me.panpf.switchbutton.SwitchButton
             style="@style/item"
             android:id="@+id/switch_main_2"
             android:text="每日头条"
@@ -37,7 +37,7 @@
             app:stateMaskDrawable="@drawable/switch_state_mask"
             app:sliderDrawable="@drawable/selector_switch_slider"/>
 
-        <me.xiaopan.switchbutton.SwitchButton
+        <me.panpf.switchbutton.SwitchButton
             style="@style/item"
             android:id="@+id/switch_main_3"
             android:text="每日热卖"
@@ -48,7 +48,7 @@
             app:stateMaskDrawable="@drawable/switch_state_mask"
             app:sliderDrawable="@drawable/selector_switch_slider"/>
 
-        <me.xiaopan.switchbutton.SwitchButton
+        <me.panpf.switchbutton.SwitchButton
             style="@style/item"
             android:id="@+id/switch_main_4"
             android:text="优惠促销"
@@ -59,7 +59,7 @@
             app:stateMaskDrawable="@drawable/switch_state_mask"
             app:sliderDrawable="@drawable/selector_switch_slider"/>
 
-        <me.xiaopan.switchbutton.SwitchButton
+        <me.panpf.switchbutton.SwitchButton
             style="@style/item"
             android:id="@+id/switch_main_5"
             android:text="偶像动态"
@@ -70,7 +70,7 @@
             app:stateMaskDrawable="@drawable/switch_state_mask"
             app:sliderDrawable="@drawable/selector_switch_slider"/>
 
-        <me.xiaopan.switchbutton.SwitchButton
+        <me.panpf.switchbutton.SwitchButton
             style="@style/item"
             android:id="@+id/switch_main_6"
             android:text="娱乐播报"
@@ -81,7 +81,7 @@
             app:stateMaskDrawable="@drawable/switch_state_mask"
             app:sliderDrawable="@drawable/selector_switch_slider"/>
 
-        <me.xiaopan.switchbutton.SwitchButton
+        <me.panpf.switchbutton.SwitchButton
             style="@style/item"
             android:id="@+id/switch_main_7"
             android:text="天气预报"
@@ -93,7 +93,7 @@
             app:stateMaskDrawable="@drawable/switch_state_mask"
             app:sliderDrawable="@drawable/selector_switch_slider"/>
 
-        <me.xiaopan.switchbutton.SwitchButton
+        <me.panpf.switchbutton.SwitchButton
             style="@style/item"
             android:id="@+id/switch_main_8"
             android:text="系统消息"
@@ -103,160 +103,5 @@
             app:stateDrawable="@drawable/selector_switch_state"
             app:stateMaskDrawable="@drawable/switch_state_mask"
             app:sliderDrawable="@drawable/selector_switch_slider"/>
-
-        <!--<me.xiaopan.switchbutton.SwitchButton
-            style="@style/item"
-            android:text="系统消息"
-            android:background="@drawable/selector_preference_header"
-            android:layout_marginTop="16dp"
-            app:withTextInterval="16dp"
-            app:frameDrawable="@drawable/switch_frame"
-            app:stateDrawable="@drawable/selector_switch_state"
-            app:stateMaskDrawable="@drawable/switch_state_mask"
-            app:sliderDrawable="@drawable/selector_switch_slider"
-            app:sliderMaskDrawable="@drawable/switch_slider_mask"/>
-
-        <me.xiaopan.switchbutton.SwitchButton
-            style="@style/item"
-            android:text="系统消息"
-            android:background="@drawable/selector_preference_center"
-            app:withTextInterval="16dp"
-            app:frameDrawable="@drawable/switch_frame"
-            app:stateDrawable="@drawable/selector_switch_state"
-            app:stateMaskDrawable="@drawable/switch_state_mask"
-            app:sliderDrawable="@drawable/selector_switch_slider"
-            app:sliderMaskDrawable="@drawable/switch_slider_mask"/>
-
-        <me.xiaopan.switchbutton.SwitchButton
-            style="@style/item"
-            android:text="系统消息"
-            android:background="@drawable/selector_preference_center"
-            app:withTextInterval="16dp"
-            app:frameDrawable="@drawable/switch_frame"
-            app:stateDrawable="@drawable/selector_switch_state"
-            app:stateMaskDrawable="@drawable/switch_state_mask"
-            app:sliderDrawable="@drawable/selector_switch_slider"
-            app:sliderMaskDrawable="@drawable/switch_slider_mask"/>
-
-        <me.xiaopan.switchbutton.SwitchButton
-            style="@style/item"
-            android:text="系统消息"
-            android:background="@drawable/selector_preference_center"
-            app:withTextInterval="16dp"
-            app:frameDrawable="@drawable/switch_frame"
-            app:stateDrawable="@drawable/selector_switch_state"
-            app:stateMaskDrawable="@drawable/switch_state_mask"
-            app:sliderDrawable="@drawable/selector_switch_slider"
-            app:sliderMaskDrawable="@drawable/switch_slider_mask"/>
-
-        <me.xiaopan.switchbutton.SwitchButton
-            style="@style/item"
-            android:text="系统消息"
-            android:background="@drawable/selector_preference_center"
-            app:withTextInterval="16dp"
-            app:frameDrawable="@drawable/switch_frame"
-            app:stateDrawable="@drawable/selector_switch_state"
-            app:stateMaskDrawable="@drawable/switch_state_mask"
-            app:sliderDrawable="@drawable/selector_switch_slider"
-            app:sliderMaskDrawable="@drawable/switch_slider_mask"/>
-
-        <me.xiaopan.switchbutton.SwitchButton
-            style="@style/item"
-            android:text="系统消息"
-            android:background="@drawable/selector_preference_center"
-            app:withTextInterval="16dp"
-            app:frameDrawable="@drawable/switch_frame"
-            app:stateDrawable="@drawable/selector_switch_state"
-            app:stateMaskDrawable="@drawable/switch_state_mask"
-            app:sliderDrawable="@drawable/selector_switch_slider"
-            app:sliderMaskDrawable="@drawable/switch_slider_mask"/>
-
-        <me.xiaopan.switchbutton.SwitchButton
-            style="@style/item"
-            android:text="系统消息"
-            android:background="@drawable/selector_preference_center"
-            app:withTextInterval="16dp"
-            app:frameDrawable="@drawable/switch_frame"
-            app:stateDrawable="@drawable/selector_switch_state"
-            app:stateMaskDrawable="@drawable/switch_state_mask"
-            app:sliderDrawable="@drawable/selector_switch_slider"
-            app:sliderMaskDrawable="@drawable/switch_slider_mask"/>
-
-        <me.xiaopan.switchbutton.SwitchButton
-            style="@style/item"
-            android:text="系统消息"
-            android:background="@drawable/selector_preference_center"
-            app:withTextInterval="16dp"
-            app:frameDrawable="@drawable/switch_frame"
-            app:stateDrawable="@drawable/selector_switch_state"
-            app:stateMaskDrawable="@drawable/switch_state_mask"
-            app:sliderDrawable="@drawable/selector_switch_slider"
-            app:sliderMaskDrawable="@drawable/switch_slider_mask"/>
-
-        <me.xiaopan.switchbutton.SwitchButton
-            style="@style/item"
-            android:text="系统消息"
-            android:background="@drawable/selector_preference_center"
-            app:withTextInterval="16dp"
-            app:frameDrawable="@drawable/switch_frame"
-            app:stateDrawable="@drawable/selector_switch_state"
-            app:stateMaskDrawable="@drawable/switch_state_mask"
-            app:sliderDrawable="@drawable/selector_switch_slider"
-            app:sliderMaskDrawable="@drawable/switch_slider_mask"/>
-
-        <me.xiaopan.switchbutton.SwitchButton
-            style="@style/item"
-            android:text="系统消息"
-            android:background="@drawable/selector_preference_center"
-            app:withTextInterval="16dp"
-            app:frameDrawable="@drawable/switch_frame"
-            app:stateDrawable="@drawable/selector_switch_state"
-            app:stateMaskDrawable="@drawable/switch_state_mask"
-            app:sliderDrawable="@drawable/selector_switch_slider"
-            app:sliderMaskDrawable="@drawable/switch_slider_mask"/>
-
-        <me.xiaopan.switchbutton.SwitchButton
-            style="@style/item"
-            android:text="系统消息"
-            android:background="@drawable/selector_preference_center"
-            app:withTextInterval="16dp"
-            app:frameDrawable="@drawable/switch_frame"
-            app:stateDrawable="@drawable/selector_switch_state"
-            app:stateMaskDrawable="@drawable/switch_state_mask"
-            app:sliderDrawable="@drawable/selector_switch_slider"
-            app:sliderMaskDrawable="@drawable/switch_slider_mask"/>
-
-        <me.xiaopan.switchbutton.SwitchButton
-            style="@style/item"
-            android:text="系统消息"
-            android:background="@drawable/selector_preference_center"
-            app:withTextInterval="16dp"
-            app:frameDrawable="@drawable/switch_frame"
-            app:stateDrawable="@drawable/selector_switch_state"
-            app:stateMaskDrawable="@drawable/switch_state_mask"
-            app:sliderDrawable="@drawable/selector_switch_slider"
-            app:sliderMaskDrawable="@drawable/switch_slider_mask"/>
-
-        <me.xiaopan.switchbutton.SwitchButton
-            style="@style/item"
-            android:text="系统消息"
-            android:background="@drawable/selector_preference_center"
-            app:withTextInterval="16dp"
-            app:frameDrawable="@drawable/switch_frame"
-            app:stateDrawable="@drawable/selector_switch_state"
-            app:stateMaskDrawable="@drawable/switch_state_mask"
-            app:sliderDrawable="@drawable/selector_switch_slider"
-            app:sliderMaskDrawable="@drawable/switch_slider_mask"/>
-
-        <me.xiaopan.switchbutton.SwitchButton
-            style="@style/item"
-            android:text="系统消息"
-            android:background="@drawable/selector_preference_footer"
-            app:withTextInterval="16dp"
-            app:frameDrawable="@drawable/switch_frame"
-            app:stateDrawable="@drawable/selector_switch_state"
-            app:stateMaskDrawable="@drawable/switch_state_mask"
-            app:sliderDrawable="@drawable/selector_switch_slider"
-            app:sliderMaskDrawable="@drawable/switch_slider_mask"/>-->
     </LinearLayout>
 </ScrollView>

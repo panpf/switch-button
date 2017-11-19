@@ -1,33 +1,27 @@
 apply plugin: 'com.android.application'
 
-Properties properties = new Properties()
-File localPropertiesFile = project.file("local.properties")
-if(localPropertiesFile.exists()){
-    properties.load(localPropertiesFile.newDataInputStream())
-}
-def signatureStoreFile = properties.getProperty("signature.storeFile");
-def signatureStorePassword = properties.getProperty("signature.storePassword");
-def signatureKeyAlias = properties.getProperty("signature.keyAlias");
-def signatureKeyPassword = properties.getProperty("signature.keyPassword");
+Properties localProperties = openProperties("local.properties")
+String jksFileName = localProperties.getProperty("sample.storeFile")
+File jksFile = jksFileName != null && "" != jksFileName.trim() ? file(jksFileName) : null
 
 android {
-    compileSdkVersion 22
-    buildToolsVersion "22.0.1"
+    compileSdkVersion COMPILE_SDK_VERSION.toInteger()
 
     defaultConfig {
-        applicationId "me.xiaopan.switchbuttonsample"
-        minSdkVersion 7
-        targetSdkVersion 22
-        versionCode 120
-        versionName "1.2.0"
+        applicationId "me.panpf.switchbutton.sample"
+
+        minSdkVersion MIN_SDK_VERSION.toInteger()
+        targetSdkVersion TARGET_SDK_VERSION.toInteger()
+        versionCode VERSION_CODE.toInteger()
+        versionName VERSION_NAME
     }
 
     signingConfigs{
         release{
-            storeFile file(signatureStoreFile)
-            storePassword signatureStorePassword
-            keyAlias signatureKeyAlias
-            keyPassword signatureKeyPassword
+            storeFile jksFile
+            storePassword localProperties.getProperty('sample.storePassword')
+            keyAlias localProperties.getProperty('sample.keyAlias')
+            keyPassword localProperties.getProperty('sample.keyPassword')
         }
     }
 
@@ -45,5 +39,17 @@ android {
 }
 
 dependencies {
-    compile project(':switchbutton')
+    compile project(':switch-button')
+}
+
+Properties openProperties(String fileName) {
+    File propertiesFile = new File(projectDir, fileName)
+    if (!propertiesFile.exists()) {
+        return new Properties()
+    }
+    FileInputStream inputStream = new FileInputStream(propertiesFile)
+    Properties properties = new Properties()
+    properties.load(inputStream)
+    inputStream.close()
+    return properties
 }
