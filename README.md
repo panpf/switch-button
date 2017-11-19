@@ -1,7 +1,7 @@
 # ![Logo](docs/logo.png) SwitchButton
 
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-SwitchButton-green.svg?style=true)](https://android-arsenal.com/details/1/4175)
-[![Release Version](https://img.shields.io/github/release/panpf/SwitchButton.svg)](https://github.com/panpf/SwitchButton/releases)
+[![Release Version](https://img.shields.io/github/release/panpf/switch-button.svg)](https://github.com/panpf/switch-button/releases)
 
 SwitchButton 是 Android 上的一个开关按钮控件
 
@@ -30,7 +30,7 @@ dependencies {
 }
 ```
 
-`$lastVersionName`：[![Release Version](https://img.shields.io/github/release/panpf/SwitchButton.svg)](https://github.com/panpf/SwitchButton/releases)`（不带v）`
+`$lastVersionName`：[![Release Version](https://img.shields.io/github/release/panpf/switch-button.svg)](https://github.com/panpf/switch-button/releases)`（不带v）`
 
 最低支持 `Android2.2 API 7`
 
