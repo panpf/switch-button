@@ -1,5 +1,7 @@
 # ![Logo](docs/logo.png) SwitchButton
 
+【Deprecated】【Stop maintenance】停止维护了，推荐使用：https://github.com/zcweng/SwitchButton
+
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-SwitchButton-green.svg?style=true)](https://android-arsenal.com/details/1/4175)
 [![Release Version](https://img.shields.io/github/release/panpf/switch-button.svg)](https://github.com/panpf/switch-button/releases)
 
