@@ -3,7 +3,6 @@
 【Deprecated】【Stop maintenance】停止维护了，推荐使用：https://github.com/zcweng/SwitchButton
 
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-SwitchButton-green.svg?style=true)](https://android-arsenal.com/details/1/4175)
-[![Release Version](https://img.shields.io/github/release/panpf/switch-button.svg)](https://github.com/panpf/switch-button/releases)
 
 SwitchButton 是 Android 上的一个开关按钮控件
 
@@ -22,19 +21,7 @@ SwitchButton 是 Android 上的一个开关按钮控件
 * 支持 Left、Top、Right、Bottom Drawable
 * 支持使用遮罩实现圆角按钮
 
-### 使用指南（Usage Guide）
-
-#### 从 JCenter 导入
-
-```groovy
-dependencies {
-	compile 'me.panpf:switch-button:$lastVersionName'
-}
-```
-
-`$lastVersionName`：[![Release Version](https://img.shields.io/github/release/panpf/switch-button.svg)](https://github.com/panpf/switch-button/releases)`（不带v）`
-
-最低支持 `Android2.2 API 7`
+### 使用指南
 
 #### 在布局中使用
 
